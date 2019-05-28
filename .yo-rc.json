@@ -1,0 +1,36 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.game"
+    },
+    "jhipsterVersion": "6.0.1",
+    "applicationType": "monolith",
+    "baseName": "gamejhipster",
+    "packageName": "com.game",
+    "packageFolder": "com/game",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "ODJjNGE2Y2M3OGRkMDM2MGRiZTk3MmNkNDcyMGQ1NDBkM2NiYzBkZTNhNDE1OWQ1ZWIxYWI5NThmNzg5NDY4ZWFlMjQxNTcxNDdlYmQ0YWIyYmQzZWMxNThkN2ZjZWU4MTA1MDI3Yzg0NGJiNTJiMWM5MGQ1OWNhOTdhMTQ0OGU=",
+    "testFrameworks": [
+      "cucumber"
+    ],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true
+  }
+}
