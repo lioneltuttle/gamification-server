@@ -1,0 +1,27 @@
+{
+    "name": "BadgeLegend",
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "nbBadges",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "validityDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190529144314",
+    "entityTableName": "badge_legend",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

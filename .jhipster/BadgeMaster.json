@@ -1,0 +1,27 @@
+{
+    "name": "BadgeMaster",
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "nbBadges",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "validityDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190529144313",
+    "entityTableName": "badge_master",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

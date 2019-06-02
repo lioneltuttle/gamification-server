@@ -1,0 +1,32 @@
+{
+    "name": "Resultat",
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "categorie",
+            "fieldType": "BadgeType",
+            "fieldValues": "R2,PROP,FINANCE,ECOLE_FR,DEMARRAGE_SANS_IC,DEMARRAGE_2_SEMAINES"
+        },
+        {
+            "fieldName": "points",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "nbBadges",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20190529144311",
+    "entityTableName": "resultat",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

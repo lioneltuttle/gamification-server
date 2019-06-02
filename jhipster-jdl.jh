@@ -1,0 +1,37 @@
+entity Resultat {
+	userId Double
+    categorie BadgeType
+    points Integer
+    nbBadges Integer
+}
+
+entity Point {
+	userId Double
+    categorie BadgeType
+    nbPoints Integer
+    date LocalDate
+}
+
+entity BadgeMaster {
+	userId Double
+    nbBadges Integer
+    validityDate LocalDate
+}
+
+entity BadgeLegend {
+	userId Double
+    nbBadges Integer
+    validityDate LocalDate
+}
+
+enum BadgeType {
+    R2, PROP, FINANCE, ECOLE_FR, 
+    DEMARRAGE_SANS_IC, 
+    DEMARRAGE_2_SEMAINES
+}
+
+// Set service options to all except few
+service all with serviceImpl except BadgeType
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

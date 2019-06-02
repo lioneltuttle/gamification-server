@@ -1,5 +1,6 @@
 package com.game.repository;
 
+import com.game.domain.Authority;
 import com.game.domain.User;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -46,4 +47,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByEmail(String email);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
+
 }

@@ -151,6 +151,11 @@ public class UserResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/usersROLEUser")
+    public List<UserDTO> getAllUsersRoleUser() {
+        return userService.findAllUsers();
+     }
+
     /**
      * Gets a list of all roles.
      * @return a string list of all roles.
