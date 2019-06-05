@@ -1,4 +1,4 @@
-package com.game.service.dto;
+package com.game.biz.service.dto;
 
 import com.game.config.Constants;
 

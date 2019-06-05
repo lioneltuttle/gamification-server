@@ -1,10 +1,13 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.PointsAudit;
 import com.game.biz.model.Resultat;
+import com.game.biz.model.enumeration.EventType;
 import com.game.biz.service.PointService;
 import com.game.biz.model.Point;
 import com.game.biz.service.ResultatService;
 import com.game.repository.biz.PointRepository;
+import com.game.biz.service.PointsAuditService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
@@ -31,8 +33,12 @@ public class PointServiceImpl implements PointService {
 
     private ResultatService resultatService;
 
-    public PointServiceImpl(PointRepository pointRepository) {
+    private PointsAuditService pointsAuditService;
+
+    public PointServiceImpl(PointRepository pointRepository, ResultatService resultatService, PointsAuditService pointsAuditService) {
         this.pointRepository = pointRepository;
+        this.resultatService = resultatService;
+        this.pointsAuditService = pointsAuditService;
     }
 
     /**
@@ -48,7 +54,19 @@ public class PointServiceImpl implements PointService {
         Resultat resultat = resultatService.findByUserIdAndCategorie(point.getUserId(), point.getCategorie()).orElseGet(Resultat::new);
         resultat.setCategorie(point.getCategorie());
         resultat.setUserId(point.getUserId());
-        resultat.setPoints(resultat.getPoints() + point.getNbPoints());
+        int newBadges = resultat.addPoints(point.getNbPoints());
+        resultatService.save(resultat);
+
+        //audit the code
+        if(newBadges != 0){
+            PointsAudit pa = new PointsAudit()
+                .userId(point.getUserId())
+                .seen(false)
+                .subject(EventType.BADGE_PRO)
+                .value(newBadges + " nouveaux badges " + point.getCategorie() );
+            pointsAuditService.save(pa);
+        }
+
         return point_retour;
     }
 

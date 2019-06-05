@@ -1,4 +1,4 @@
-package com.game.service.dto;
+package com.game.biz.service.dto;
 
 /**
  * A DTO representing a password change required data - current and new password.

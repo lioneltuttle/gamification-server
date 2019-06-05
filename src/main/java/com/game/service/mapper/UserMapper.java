@@ -2,7 +2,7 @@ package com.game.service.mapper;
 
 import com.game.domain.Authority;
 import com.game.domain.User;
-import com.game.service.dto.UserDTO;
+import com.game.biz.service.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
 

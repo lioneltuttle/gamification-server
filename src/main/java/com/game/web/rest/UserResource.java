@@ -6,7 +6,7 @@ import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.service.MailService;
 import com.game.service.UserService;
-import com.game.service.dto.UserDTO;
+import com.game.biz.service.dto.UserDTO;
 import com.game.web.rest.errors.BadRequestAlertException;
 import com.game.web.rest.errors.EmailAlreadyUsedException;
 import com.game.web.rest.errors.LoginAlreadyUsedException;

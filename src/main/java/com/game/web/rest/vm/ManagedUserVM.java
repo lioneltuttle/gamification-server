@@ -1,6 +1,6 @@
 package com.game.web.rest.vm;
 
-import com.game.service.dto.UserDTO;
+import com.game.biz.service.dto.UserDTO;
 import javax.validation.constraints.Size;
 
 /**

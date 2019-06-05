@@ -1,12 +1,10 @@
 package com.game.biz.model;
 
 
+import com.game.biz.model.enumeration.BadgeType;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-
-import com.game.biz.model.enumeration.BadgeType;
 
 /**
  * A Resultat.
@@ -29,10 +27,10 @@ public class Resultat implements Serializable {
     private BadgeType categorie;
 
     @Column(name = "points")
-    private Integer points;
+    private Integer points = 0;
 
     @Column(name = "nb_badges")
-    private Integer nbBadges;
+    private Integer nbBadges = 0;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -124,17 +122,20 @@ public class Resultat implements Serializable {
     }
 
     //business methods
-    public void addPoints(int nbPoints){
-        if(BadgeType.R2 == categorie){
-            if (this.points + nbPoints > 20){
-                this.nbBadges ++;
-                this.points = points + nbPoints - 20;
-            }
-        } else {
-            if (this.points + nbPoints > 10){
-                this.nbBadges ++;
-                this.points = points + nbPoints - 10;
-            }
-        }
+
+    /**
+     * returns the number of badges created
+     * @param nbPoints
+     * @return
+     */
+    public int addPoints(int nbPoints){
+        return generateBadges(points + nbPoints, BadgeType.R2 == categorie ? 20:10);
+    }
+
+    private int generateBadges(int points, int nbPointsForBadge){
+        this.points = points%nbPointsForBadge;
+        int newBadges =  Math.floorDiv(points, nbPointsForBadge);
+        this.nbBadges += newBadges;
+        return newBadges;
     }
 }

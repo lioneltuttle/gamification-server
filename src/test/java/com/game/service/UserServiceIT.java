@@ -4,7 +4,7 @@ import com.game.GamejhipsterApp;
 import com.game.config.Constants;
 import com.game.domain.User;
 import com.game.repository.UserRepository;
-import com.game.service.dto.UserDTO;
+import com.game.biz.service.dto.UserDTO;
 import com.game.service.util.RandomUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;

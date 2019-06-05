@@ -1,4 +1,4 @@
 /**
  * Data Transfer Objects.
  */
-package com.game.service.dto;
+package com.game.biz.service.dto;

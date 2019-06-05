@@ -7,7 +7,7 @@ import com.game.repository.AuthorityRepository;
 import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.security.SecurityUtils;
-import com.game.service.dto.UserDTO;
+import com.game.biz.service.dto.UserDTO;
 import com.game.service.util.RandomUtil;
 import com.game.web.rest.errors.*;
 
@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;

@@ -98,16 +98,10 @@ public class ResultatResource {
      * @param username the id of the resultat to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the resultat, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/resultats/{username}")
-    public List<Resultat> getResultat(@PathVariable String username) {
-        log.debug("REST request to get Resultat : {}", username);
-
-        List<Resultat> resultats = null;
-        Optional<User> user = userService.findByUsername(username);
-        if(user.isPresent()){
-            resultats = resultatService.findByUserId(user.get().getId());
-        }
-        return resultats;
+    @GetMapping("/resultats/{userId}")
+    public List<Resultat> getResultat(@PathVariable Long userId) {
+        log.debug("REST request to get Resultat : {}", userId);
+        return resultatService.findByUserId(userId);
     }
 
     /**
