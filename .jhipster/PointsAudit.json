@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "subject",
+            "fieldType": "EventType",
+            "fieldValues": "BADGE_PRO,BADGE_MASTER_AVAILABLE,BADGE_LEGEND_AVAILABLE,POINTS_RESET,BADGE_PRO_RESETTED,BADGE_MASTER_RESETTED"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "seen",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20190604232339",
+    "dto": "no",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "points_audit",
+    "databaseType": "sql",
+    "jpaMetamodelFiltering": true,
+    "pagination": "no"
+}
