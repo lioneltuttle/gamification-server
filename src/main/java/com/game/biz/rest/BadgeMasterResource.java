@@ -1,6 +1,7 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.BadgeMaster;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeMasterService;
 import com.game.web.rest.errors.BadRequestAlertException;
 
@@ -64,10 +65,9 @@ public class BadgeMasterResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated badgeMaster,
      * or with status {@code 400 (Bad Request)} if the badgeMaster is not valid,
      * or with status {@code 500 (Internal Server Error)} if the badgeMaster couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/badge-masters")
-    public ResponseEntity<BadgeMaster> updateBadgeMaster(@RequestBody BadgeMaster badgeMaster) throws URISyntaxException {
+    public ResponseEntity<BadgeMaster> updateBadgeMaster(@RequestBody BadgeMaster badgeMaster) {
         log.debug("REST request to update BadgeMaster : {}", badgeMaster);
         if (badgeMaster.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -113,5 +113,16 @@ public class BadgeMasterResource {
         log.debug("REST request to delete BadgeMaster : {}", id);
         badgeMasterService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/badge-masters/count/{userId}")
+    public Long getNbBadgesMaster(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
+        log.debug("REST request to get Resultat  for /badge-masters/count/ : {}", userId);
+        return badgeMasterService.getNbBadgesMaster(userId);
+    }
+
+    @GetMapping("/badge-masters/exchange/{userId}")
+    public void exchangeForLegend(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
+        badgeMasterService.exchangeMasterForLegend(userId);
     }
 }

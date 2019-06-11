@@ -1,6 +1,7 @@
 package com.game.biz.service;
 
 import com.game.biz.model.BadgeLegend;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,4 +41,16 @@ public interface BadgeLegendService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+
+    void exchangeLegendForPresent(Long userID) throws NumberOfBadgesRequiredException;
+
+    BadgeLegend findByUserId(Long userId);
+
+    /**
+     * counts the number of badges Legend
+     * @param userId
+     * @return
+     */
+    long getNbBadgesLegend(Long userId);
 }

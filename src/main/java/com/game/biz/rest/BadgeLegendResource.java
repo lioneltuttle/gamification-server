@@ -1,6 +1,7 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.BadgeLegend;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
 import com.game.web.rest.errors.BadRequestAlertException;
 
@@ -64,10 +65,9 @@ public class BadgeLegendResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated badgeLegend,
      * or with status {@code 400 (Bad Request)} if the badgeLegend is not valid,
      * or with status {@code 500 (Internal Server Error)} if the badgeLegend couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/badge-legends")
-    public ResponseEntity<BadgeLegend> updateBadgeLegend(@RequestBody BadgeLegend badgeLegend) throws URISyntaxException {
+    public ResponseEntity<BadgeLegend> updateBadgeLegend(@RequestBody BadgeLegend badgeLegend) {
         log.debug("REST request to update BadgeLegend : {}", badgeLegend);
         if (badgeLegend.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -113,5 +113,15 @@ public class BadgeLegendResource {
         log.debug("REST request to delete BadgeLegend : {}", id);
         badgeLegendService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/badge-legends/count/{userId}")
+    public Long getNbBadgesLegend(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
+        return badgeLegendService.getNbBadgesLegend(userId);
+    }
+
+    @GetMapping("/badge-legends/exchange/{userId}")
+    public void exchangeForPresent(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
+        badgeLegendService.exchangeLegendForPresent(userId);
     }
 }

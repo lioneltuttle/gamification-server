@@ -35,6 +35,11 @@ public class Point implements Serializable {
     @Column(name = "jhi_date")
     private LocalDate date;
 
+    public Point(){}
+    public Point(Long userId){
+        this.userId = userId;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

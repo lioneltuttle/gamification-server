@@ -2,6 +2,7 @@ package com.game.biz.service;
 
 import com.game.biz.model.Resultat;
 import com.game.biz.model.enumeration.BadgeType;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,4 +57,8 @@ public interface ResultatService {
      * resets everybody's point to 0
      */
     void resetMonthPoints();
+
+    int countBadgesPro(Long userId);
+
+    void exchangeProForMaster(Long userID) throws NumberOfBadgesRequiredException;
 }
