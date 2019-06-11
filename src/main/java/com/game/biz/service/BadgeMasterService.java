@@ -1,6 +1,7 @@
 package com.game.biz.service;
 
 import com.game.biz.model.BadgeMaster;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,4 +41,15 @@ public interface BadgeMasterService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * counts the number of badges master
+     * @param userId
+     * @return
+     */
+    long getNbBadgesMaster(Long userId);
+
+    void exchangeMasterForLegend(Long userID) throws NumberOfBadgesRequiredException;
+
+    void addOne(Long userId);
 }

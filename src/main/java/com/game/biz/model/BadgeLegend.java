@@ -6,6 +6,9 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * A BadgeLegend.
@@ -21,13 +24,22 @@ public class BadgeLegend implements Serializable {
     private Long id;
 
     @Column(name = "user_id")
-    private Double userId;
+    private Long userId;
 
     @Column(name = "nb_badges")
-    private Integer nbBadges;
+    private Integer nbBadges = 0;
 
     @Column(name = "validity_date")
     private LocalDate validityDate;
+
+
+    public BadgeLegend(){};
+    public BadgeLegend(Long userId){
+        this.userId = userId;
+        //end of current year
+        LocalDate date = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
+        validityDate = date;
+    };
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -38,16 +50,16 @@ public class BadgeLegend implements Serializable {
         this.id = id;
     }
 
-    public Double getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public BadgeLegend userId(Double userId) {
+    public BadgeLegend userId(Long userId) {
         this.userId = userId;
         return this;
     }
 
-    public void setUserId(Double userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

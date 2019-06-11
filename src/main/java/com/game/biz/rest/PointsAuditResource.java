@@ -64,10 +64,9 @@ public class PointsAuditResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pointsAudit,
      * or with status {@code 400 (Bad Request)} if the pointsAudit is not valid,
      * or with status {@code 500 (Internal Server Error)} if the pointsAudit couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/points-audits")
-    public ResponseEntity<PointsAudit> updatePointsAudit(@RequestBody PointsAudit pointsAudit) throws URISyntaxException {
+    public ResponseEntity<PointsAudit> updatePointsAudit(@RequestBody PointsAudit pointsAudit) {
         log.debug("REST request to update PointsAudit : {}", pointsAudit);
         if (pointsAudit.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

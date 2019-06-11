@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
 
 /**
  * A BadgeMaster.
@@ -21,13 +22,32 @@ public class BadgeMaster implements Serializable {
     private Long id;
 
     @Column(name = "user_id")
-    private Double userId;
+    private Long userId;
 
     @Column(name = "nb_badges")
-    private Integer nbBadges;
+    private Integer nbBadges = 0;
 
     @Column(name = "validity_date")
     private LocalDate validityDate;
+
+    public BadgeMaster(){}
+    public BadgeMaster(Long userId){
+        this.userId = userId;
+        //last day of quarter
+        LocalDate date  = LocalDate.now();
+        if(date.isBefore(date.with(Month.APRIL).withDayOfMonth(1))){
+            validityDate = date.with(Month.APRIL).withDayOfMonth(1);
+        }else
+
+        if(date.isBefore(date.with(Month.JULY).withDayOfMonth(1))){
+            validityDate = date.with(Month.JULY).withDayOfMonth(1);
+        }else
+
+        if(date.isBefore(date.with(Month.OCTOBER).withDayOfMonth(1))){
+            validityDate = date.with(Month.OCTOBER).withDayOfMonth(1);
+        }else
+            validityDate = date.with(Month.DECEMBER).withDayOfMonth(31);
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -38,16 +58,16 @@ public class BadgeMaster implements Serializable {
         this.id = id;
     }
 
-    public Double getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public BadgeMaster userId(Double userId) {
+    public BadgeMaster userId(Long userId) {
         this.userId = userId;
         return this;
     }
 
-    public void setUserId(Double userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

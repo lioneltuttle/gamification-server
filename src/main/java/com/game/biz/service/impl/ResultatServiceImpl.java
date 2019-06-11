@@ -1,6 +1,12 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.BadgeMaster;
+import com.game.biz.model.PointsAudit;
 import com.game.biz.model.enumeration.BadgeType;
+import com.game.biz.model.enumeration.EventType;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
+import com.game.biz.service.BadgeMasterService;
+import com.game.biz.service.PointsAuditService;
 import com.game.biz.service.ResultatService;
 import com.game.biz.model.Resultat;
 import com.game.repository.biz.ResultatRepository;
@@ -24,8 +30,16 @@ public class ResultatServiceImpl implements ResultatService {
 
     private final ResultatRepository resultatRepository;
 
-    public ResultatServiceImpl(ResultatRepository resultatRepository) {
+    private final BadgeMasterService badgeMasterService;
+
+    private final PointsAuditService pointsAuditService;
+
+    private static int PRO_FOR_MASTER = 3;
+
+    public ResultatServiceImpl(ResultatRepository resultatRepository, BadgeMasterService badgeMasterService, PointsAuditService pointsAuditService) {
         this.resultatRepository = resultatRepository;
+        this.badgeMasterService = badgeMasterService;
+        this.pointsAuditService = pointsAuditService;
     }
 
     /**
@@ -90,5 +104,36 @@ public class ResultatServiceImpl implements ResultatService {
     @Override
     public void resetMonthPoints() {
         resultatRepository.findAll().stream().forEach(resultat -> resultat.setPoints(0));
+    }
+
+    @Override
+    public int countBadgesPro(Long userId) {
+        return resultatRepository.sumOfBadgesProByUserd(userId);
+    }
+
+    @Override
+    public void exchangeProForMaster(Long userID) throws NumberOfBadgesRequiredException {
+        int badgesProNeeded = PRO_FOR_MASTER;
+
+            for( BadgeType type : BadgeType.values()){
+                Resultat res = resultatRepository.findByUserIdAndCategorie(userID,type).orElseGet(Resultat::new);
+                if(res.getNbBadges() > 0){
+                    if(res.getNbBadges() >= badgesProNeeded){
+                        res.setNbBadges( res.getNbBadges() - badgesProNeeded);
+                        save(res);
+                        badgeMasterService.addOne(userID);
+                        PointsAudit pa = new PointsAudit().userId(userID).subject(EventType.EXCHANGE_PRO_FOR_MASTER).value(type.name()).seen(true);
+                        pointsAuditService.save(pa);
+                        return;
+                    } else {
+                        badgesProNeeded -= res.getNbBadges();
+                        res.setNbBadges(0);
+                        save(res);
+                        PointsAudit pa = new PointsAudit().userId(userID).subject(EventType.EXCHANGE_PRO_FOR_MASTER).value(type.name()).seen(true);
+                        pointsAuditService.save(pa);
+                    }
+                }
+            }
+        throw new NumberOfBadgesRequiredException();
     }
 }

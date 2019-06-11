@@ -58,7 +58,7 @@ public class PointResource {
     }
 
     @PostMapping("/pointsSave")
-    public void createPoint(@RequestBody List<Point> points) throws URISyntaxException {
+    public void createPoint(@RequestBody List<Point> points) {
         log.debug("REST request to save all Points : {}", points);
 
         pointService.saveAll(points);
@@ -71,10 +71,9 @@ public class PointResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated point,
      * or with status {@code 400 (Bad Request)} if the point is not valid,
      * or with status {@code 500 (Internal Server Error)} if the point couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/points")
-    public ResponseEntity<Point> updatePoint(@RequestBody Point point) throws URISyntaxException {
+    public ResponseEntity<Point> updatePoint(@RequestBody Point point) {
         log.debug("REST request to update Point : {}", point);
         if (point.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

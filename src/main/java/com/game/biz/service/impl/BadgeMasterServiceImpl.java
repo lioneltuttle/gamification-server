@@ -1,7 +1,13 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.BadgeLegend;
+import com.game.biz.model.PointsAudit;
+import com.game.biz.model.enumeration.EventType;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
+import com.game.biz.service.BadgeLegendService;
 import com.game.biz.service.BadgeMasterService;
 import com.game.biz.model.BadgeMaster;
+import com.game.biz.service.PointsAuditService;
 import com.game.repository.biz.BadgeMasterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +29,16 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
 
     private final BadgeMasterRepository badgeMasterRepository;
 
-    public BadgeMasterServiceImpl(BadgeMasterRepository badgeMasterRepository) {
+    private final BadgeLegendService badgeLegendService;
+
+    private final PointsAuditService pointsAuditService;
+
+    private static int MASTER_FOR_LEGEND = 3;
+
+    public BadgeMasterServiceImpl(BadgeMasterRepository badgeMasterRepository, BadgeLegendService badgeLegendService, PointsAuditService pointsAuditService) {
         this.badgeMasterRepository = badgeMasterRepository;
+        this.badgeLegendService = badgeLegendService;
+        this.pointsAuditService = pointsAuditService;
     }
 
     /**
@@ -74,5 +88,37 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
     public void delete(Long id) {
         log.debug("Request to delete BadgeMaster : {}", id);
         badgeMasterRepository.deleteById(id);
+    }
+
+    @Override
+    public long getNbBadgesMaster(Long userId){
+        BadgeMaster master =  badgeMasterRepository.findByUserId(userId).orElse(new BadgeMaster(userId));
+
+        return master.getNbBadges();
+    }
+
+    @Override
+    public void exchangeMasterForLegend(Long userID) throws NumberOfBadgesRequiredException {
+        BadgeMaster badge = badgeMasterRepository.findByUserId(userID).orElse(new BadgeMaster(userID));
+        if(badge.getNbBadges() < MASTER_FOR_LEGEND){
+            throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
+        }
+        BadgeLegend legend = badgeLegendService.findByUserId(userID);
+        int nbNew = 0;
+        for(int i = badge.getNbBadges() ; i > MASTER_FOR_LEGEND ; i = i-MASTER_FOR_LEGEND){
+            badge.setNbBadges(badge.getNbBadges() - MASTER_FOR_LEGEND);
+            legend.setNbBadges(legend.getNbBadges() +1);
+            nbNew++;
+        }
+        PointsAudit audit = new PointsAudit().userId(userID).subject(EventType.EXCHANGE_MASTER_FOR_LEGEND).seen(true).value(""+nbNew);
+        pointsAuditService.save(audit);
+        badgeMasterRepository.save(badge);
+        badgeLegendService.save(legend);
+    }
+
+    public void addOne(Long userId){
+        BadgeMaster bm = badgeMasterRepository.findByUserId(userId).orElse(new BadgeMaster(userId));
+        bm.setNbBadges(bm.getNbBadges()+1);
+        save(bm);
     }
 }

@@ -1,7 +1,12 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.BadgeMaster;
+import com.game.biz.model.PointsAudit;
+import com.game.biz.model.enumeration.EventType;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
 import com.game.biz.model.BadgeLegend;
+import com.game.biz.service.PointsAuditService;
 import com.game.repository.biz.BadgeLegendRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +28,14 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
 
     private final BadgeLegendRepository badgeLegendRepository;
 
-    public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository) {
+    private final PointsAuditService pointsAuditService;
+
+
+    private static int LEGEND_FOR_PRESENT = 2;
+
+    public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository, PointsAuditService pointsAuditService) {
         this.badgeLegendRepository = badgeLegendRepository;
+        this.pointsAuditService  = pointsAuditService;
     }
 
     /**
@@ -75,4 +86,33 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
         log.debug("Request to delete BadgeLegend : {}", id);
         badgeLegendRepository.deleteById(id);
     }
+
+    @Override
+    public BadgeLegend findByUserId(Long userId) {
+        BadgeLegend bl = badgeLegendRepository.findByUserId(userId).orElse(new BadgeLegend(userId));
+        return bl;
+    }
+
+    @Override
+    public long getNbBadgesLegend(Long userId) {
+        return findByUserId(userId).getNbBadges();
+    }
+
+    @Override
+    public void exchangeLegendForPresent(Long userID) throws NumberOfBadgesRequiredException {
+        BadgeLegend badge = badgeLegendRepository.findByUserId(userID).orElseGet(BadgeLegend::new);
+        if(badge.getNbBadges() < LEGEND_FOR_PRESENT){
+            throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
+        }
+        int nbNew = 0;
+        for(int i = badge.getNbBadges() ; i > LEGEND_FOR_PRESENT ; i = i-LEGEND_FOR_PRESENT){
+            badge.setNbBadges(badge.getNbBadges() - LEGEND_FOR_PRESENT);
+            nbNew++;
+        }
+        PointsAudit audit = new PointsAudit().userId(userID).subject(EventType.PRESENT_WON).seen(false).value(""+nbNew);
+        pointsAuditService.save(audit);
+        badgeLegendRepository.save(badge);
+    }
+
+
 }

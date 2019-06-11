@@ -37,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = GamejhipsterApp.class)
 public class BadgeLegendResourceIT {
 
-    private static final Double DEFAULT_USER_ID = 1D;
-    private static final Double UPDATED_USER_ID = 2D;
+    private static final Long DEFAULT_USER_ID = 1l;
+    private static final Long UPDATED_USER_ID = 2l;
 
     private static final Integer DEFAULT_NB_BADGES = 1;
     private static final Integer UPDATED_NB_BADGES = 2;

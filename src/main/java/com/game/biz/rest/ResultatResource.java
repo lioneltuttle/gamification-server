@@ -1,6 +1,7 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.Resultat;
+import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.ResultatService;
 import com.game.domain.User;
 import com.game.service.UserService;
@@ -67,10 +68,9 @@ public class ResultatResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated resultat,
      * or with status {@code 400 (Bad Request)} if the resultat is not valid,
      * or with status {@code 500 (Internal Server Error)} if the resultat couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/resultats")
-    public ResponseEntity<Resultat> updateResultat(@RequestBody Resultat resultat) throws URISyntaxException {
+    public ResponseEntity<Resultat> updateResultat(@RequestBody Resultat resultat) {
         log.debug("REST request to update Resultat : {}", resultat);
         if (resultat.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -95,7 +95,7 @@ public class ResultatResource {
     /**
      * {@code GET  /resultats/:id} : get the "id" resultat.
      *
-     * @param username the id of the resultat to retrieve.
+     * @param userId the id of the resultat to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the resultat, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/resultats/{userId}")
@@ -115,5 +115,16 @@ public class ResultatResource {
         log.debug("REST request to delete Resultat : {}", id);
         resultatService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/badge-pro/count/{userId}")
+    public int countBadgesPro(@PathVariable Long userId){
+        return resultatService.countBadgesPro(userId);
+    }
+
+    @GetMapping("/badge-pro/exchange/{userId}")
+    public void exchangeProForMaster(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
+        log.debug("REST exchangeProForMaster for : {}", userId);
+       resultatService.exchangeProForMaster(userId);
     }
 }
