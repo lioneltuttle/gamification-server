@@ -108,7 +108,7 @@ public class ResultatServiceImpl implements ResultatService {
 
     @Override
     public int countBadgesPro(Long userId) {
-        return resultatRepository.sumOfBadgesProByUserd(userId);
+        return resultatRepository.sumOfBadgesProByUserd(userId).orElse(0);
     }
 
     @Override

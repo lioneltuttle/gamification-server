@@ -32,7 +32,7 @@ public class PointsAudit implements Serializable {
     private String value;
 
     @Column(name = "seen")
-    private Boolean seen;
+    private Boolean seen = true;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

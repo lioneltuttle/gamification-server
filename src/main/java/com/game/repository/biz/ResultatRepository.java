@@ -22,6 +22,6 @@ public interface ResultatRepository extends JpaRepository<Resultat, Long> {
     Optional<Resultat> findByUserIdAndCategorie(Long userId, BadgeType categorie);
 
     @Query("select sum(r.nbBadges) from Resultat r where r.userId = :userId")
-    Integer sumOfBadgesProByUserd(@Param("userId") Long userId);
+    Optional<Integer> sumOfBadgesProByUserd(@Param("userId") Long userId);
 
  }

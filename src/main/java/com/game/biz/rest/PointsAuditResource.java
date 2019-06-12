@@ -83,6 +83,11 @@ public class PointsAuditResource {
         return pointsAuditService.findAllUnseen(userId);
     }
 
+    @GetMapping("/points-audits-for/badge-pro/{userId}")
+    public List<PointsAudit> findAllBadgesProUnseen(@PathVariable Long userId) {
+        return pointsAuditService.findAllBadgesProUnseen(userId);
+    }
+
     /**
      * {@code GET  /points-audits/:id} : get the "id" pointsAudit.
      *

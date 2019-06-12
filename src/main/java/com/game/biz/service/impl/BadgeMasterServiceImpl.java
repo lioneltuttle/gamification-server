@@ -33,7 +33,7 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
 
     private final PointsAuditService pointsAuditService;
 
-    private static int MASTER_FOR_LEGEND = 3;
+    private static int MASTER_FOR_LEGEND = 2;
 
     public BadgeMasterServiceImpl(BadgeMasterRepository badgeMasterRepository, BadgeLegendService badgeLegendService, PointsAuditService pointsAuditService) {
         this.badgeMasterRepository = badgeMasterRepository;
@@ -105,7 +105,7 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
         }
         BadgeLegend legend = badgeLegendService.findByUserId(userID);
         int nbNew = 0;
-        for(int i = badge.getNbBadges() ; i > MASTER_FOR_LEGEND ; i = i-MASTER_FOR_LEGEND){
+        for(int i = badge.getNbBadges() ; i >= MASTER_FOR_LEGEND ; i = i-MASTER_FOR_LEGEND){
             badge.setNbBadges(badge.getNbBadges() - MASTER_FOR_LEGEND);
             legend.setNbBadges(legend.getNbBadges() +1);
             nbNew++;

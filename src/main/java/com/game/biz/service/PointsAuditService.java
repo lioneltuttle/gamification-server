@@ -42,4 +42,6 @@ public interface PointsAuditService {
     void delete(Long id);
 
     List<PointsAudit> findAllUnseen(Long userId);
+
+    List<PointsAudit> findAllBadgesProUnseen(Long userId);
 }

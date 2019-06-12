@@ -1,5 +1,6 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.enumeration.EventType;
 import com.game.biz.service.PointsAuditService;
 import com.game.biz.model.PointsAudit;
 import com.game.repository.biz.PointsAuditRepository;
@@ -79,5 +80,10 @@ public class PointsAuditServiceImpl implements PointsAuditService {
     @Override
     public List<PointsAudit> findAllUnseen(Long userId) {
         return pointsAuditRepository.findAllByUserIdAndSeen(userId, false);
+    }
+
+    @Override
+    public List<PointsAudit> findAllBadgesProUnseen(Long userId) {
+        return pointsAuditRepository.findAllByUserIdAndSubjectAndSeen(userId, EventType.BADGE_PRO, false);
     }
 }

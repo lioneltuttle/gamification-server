@@ -31,7 +31,7 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
     private final PointsAuditService pointsAuditService;
 
 
-    private static int LEGEND_FOR_PRESENT = 2;
+    private static int LEGEND_FOR_PRESENT = 3;
 
     public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository, PointsAuditService pointsAuditService) {
         this.badgeLegendRepository = badgeLegendRepository;
@@ -105,7 +105,7 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
             throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
         }
         int nbNew = 0;
-        for(int i = badge.getNbBadges() ; i > LEGEND_FOR_PRESENT ; i = i-LEGEND_FOR_PRESENT){
+        for(int i = badge.getNbBadges() ; i >= LEGEND_FOR_PRESENT ; i = i-LEGEND_FOR_PRESENT){
             badge.setNbBadges(badge.getNbBadges() - LEGEND_FOR_PRESENT);
             nbNew++;
         }
