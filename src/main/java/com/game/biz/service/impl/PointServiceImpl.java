@@ -1,16 +1,15 @@
 package com.game.biz.service.impl;
 
+import com.game.biz.model.Point;
 import com.game.biz.model.PointsAudit;
 import com.game.biz.model.Resultat;
 import com.game.biz.model.enumeration.EventType;
 import com.game.biz.service.PointService;
-import com.game.biz.model.Point;
+import com.game.biz.service.PointsAuditService;
 import com.game.biz.service.ResultatService;
 import com.game.repository.biz.PointRepository;
-import com.game.biz.service.PointsAuditService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +71,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public void saveAll(List<Point> points) {
-        points.stream().forEach(p -> save(p));
+        points.stream().forEach(this::save);
     }
 
     /**

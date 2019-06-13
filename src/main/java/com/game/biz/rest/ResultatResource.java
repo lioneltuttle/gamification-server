@@ -3,11 +3,9 @@ package com.game.biz.rest;
 import com.game.biz.model.Resultat;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.ResultatService;
-import com.game.domain.User;
 import com.game.service.UserService;
 import com.game.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link Resultat}.

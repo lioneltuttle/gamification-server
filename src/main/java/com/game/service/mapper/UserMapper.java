@@ -1,12 +1,14 @@
 package com.game.service.mapper;
 
+import com.game.biz.service.dto.UserDTO;
 import com.game.domain.Authority;
 import com.game.domain.User;
-import com.game.biz.service.dto.UserDTO;
-
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

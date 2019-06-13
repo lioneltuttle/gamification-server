@@ -2,7 +2,8 @@ package com.game.repository.biz;
 
 import com.game.biz.model.PointsAudit;
 import com.game.biz.model.enumeration.EventType;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.game.service;
 
+import com.game.biz.service.dto.UserDTO;
 import com.game.config.Constants;
 import com.game.domain.Authority;
 import com.game.domain.User;
@@ -7,10 +8,10 @@ import com.game.repository.AuthorityRepository;
 import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.security.SecurityUtils;
-import com.game.biz.service.dto.UserDTO;
 import com.game.service.util.RandomUtil;
-import com.game.web.rest.errors.*;
-
+import com.game.web.rest.errors.EmailAlreadyUsedException;
+import com.game.web.rest.errors.InvalidPasswordException;
+import com.game.web.rest.errors.LoginAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;

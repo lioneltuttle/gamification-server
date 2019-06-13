@@ -3,7 +3,6 @@ package com.game.security;
 import com.game.GamejhipsterApp;
 import com.game.domain.User;
 import com.game.repository.UserRepository;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

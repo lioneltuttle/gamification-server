@@ -1,7 +1,6 @@
 package com.game.repository;
 
 import com.game.domain.Authority;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

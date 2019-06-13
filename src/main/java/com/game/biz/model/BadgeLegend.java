@@ -1,13 +1,9 @@
 package com.game.biz.model;
 
 
-
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
 /**
@@ -33,13 +29,13 @@ public class BadgeLegend implements Serializable {
     private LocalDate validityDate;
 
 
-    public BadgeLegend(){};
+    public BadgeLegend(){}
+
     public BadgeLegend(Long userId){
         this.userId = userId;
         //end of current year
-        LocalDate date = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
-        validityDate = date;
-    };
+        validityDate = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

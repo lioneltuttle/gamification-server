@@ -1,12 +1,10 @@
 package com.game.biz.model;
 
 
+import com.game.biz.model.enumeration.EventType;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-
-import com.game.biz.model.enumeration.EventType;
 
 /**
  * A PointsAudit.

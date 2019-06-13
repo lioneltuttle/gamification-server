@@ -1,17 +1,16 @@
 package com.game.biz.service.impl;
 
 import com.game.biz.model.BadgeLegend;
+import com.game.biz.model.BadgeMaster;
 import com.game.biz.model.PointsAudit;
 import com.game.biz.model.enumeration.EventType;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
 import com.game.biz.service.BadgeMasterService;
-import com.game.biz.model.BadgeMaster;
 import com.game.biz.service.PointsAuditService;
 import com.game.repository.biz.BadgeMasterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +31,6 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
     private final BadgeLegendService badgeLegendService;
 
     private final PointsAuditService pointsAuditService;
-
-    private static int MASTER_FOR_LEGEND = 2;
 
     public BadgeMasterServiceImpl(BadgeMasterRepository badgeMasterRepository, BadgeLegendService badgeLegendService, PointsAuditService pointsAuditService) {
         this.badgeMasterRepository = badgeMasterRepository;
@@ -100,12 +97,13 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
     @Override
     public void exchangeMasterForLegend(Long userID) throws NumberOfBadgesRequiredException {
         BadgeMaster badge = badgeMasterRepository.findByUserId(userID).orElse(new BadgeMaster(userID));
+        int MASTER_FOR_LEGEND = 2;
         if(badge.getNbBadges() < MASTER_FOR_LEGEND){
             throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
         }
         BadgeLegend legend = badgeLegendService.findByUserId(userID);
         int nbNew = 0;
-        for(int i = badge.getNbBadges() ; i >= MASTER_FOR_LEGEND ; i = i-MASTER_FOR_LEGEND){
+        for(int i = badge.getNbBadges(); i >= MASTER_FOR_LEGEND; i = i- MASTER_FOR_LEGEND){
             badge.setNbBadges(badge.getNbBadges() - MASTER_FOR_LEGEND);
             legend.setNbBadges(legend.getNbBadges() +1);
             nbNew++;

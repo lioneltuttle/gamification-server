@@ -1,20 +1,18 @@
 package com.game.web.rest;
 
+import com.game.biz.service.dto.UserDTO;
 import com.game.config.Constants;
 import com.game.domain.User;
 import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.service.MailService;
 import com.game.service.UserService;
-import com.game.biz.service.dto.UserDTO;
 import com.game.web.rest.errors.BadRequestAlertException;
 import com.game.web.rest.errors.EmailAlreadyUsedException;
 import com.game.web.rest.errors.LoginAlreadyUsedException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +29,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing users.

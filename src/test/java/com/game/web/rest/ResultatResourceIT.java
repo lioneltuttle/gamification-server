@@ -2,12 +2,12 @@ package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
 import com.game.biz.model.Resultat;
-import com.game.repository.biz.ResultatRepository;
+import com.game.biz.model.enumeration.BadgeType;
 import com.game.biz.rest.ResultatResource;
 import com.game.biz.service.ResultatService;
+import com.game.repository.biz.ResultatRepository;
 import com.game.service.UserService;
 import com.game.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -29,8 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.game.biz.model.enumeration.BadgeType;
 /**
  * Integration tests for the {@Link ResultatResource} REST controller.
  */
@@ -110,12 +108,11 @@ public class ResultatResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Resultat createUpdatedEntity(EntityManager em) {
-        Resultat resultat = new Resultat()
+        return new Resultat()
             .userId(UPDATED_USER_ID)
             .categorie(UPDATED_CATEGORIE)
             .points(UPDATED_POINTS)
             .nbBadges(UPDATED_NB_BADGES);
-        return resultat;
     }
 
     @BeforeEach

@@ -1,13 +1,13 @@
 package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
+import com.game.biz.service.dto.UserDTO;
 import com.game.domain.Authority;
 import com.game.domain.User;
 import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.service.MailService;
 import com.game.service.UserService;
-import com.game.biz.service.dto.UserDTO;
 import com.game.service.mapper.UserMapper;
 import com.game.web.rest.errors.ExceptionTranslator;
 import com.game.web.rest.vm.ManagedUserVM;
@@ -26,11 +26,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

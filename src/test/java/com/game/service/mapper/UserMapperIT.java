@@ -2,8 +2,8 @@ package com.game.service.mapper;
 
 
 import com.game.GamejhipsterApp;
-import com.game.domain.User;
 import com.game.biz.service.dto.UserDTO;
+import com.game.domain.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,13 +1,11 @@
 package com.game.biz.model;
 
 
+import com.game.biz.model.enumeration.BadgeType;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-
-import com.game.biz.model.enumeration.BadgeType;
 
 /**
  * A Point.

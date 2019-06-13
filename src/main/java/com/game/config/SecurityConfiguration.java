@@ -1,10 +1,8 @@
 package com.game.config;
 
-import com.game.security.*;
-import com.game.security.jwt.*;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
+import com.game.security.AuthoritiesConstants;
+import com.game.security.jwt.JWTConfigurer;
+import com.game.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;

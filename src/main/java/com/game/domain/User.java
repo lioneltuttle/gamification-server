@@ -1,8 +1,7 @@
 package com.game.domain;
 
-import com.game.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.game.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 

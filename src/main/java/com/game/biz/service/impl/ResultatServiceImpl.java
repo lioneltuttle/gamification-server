@@ -1,18 +1,16 @@
 package com.game.biz.service.impl;
 
-import com.game.biz.model.BadgeMaster;
 import com.game.biz.model.PointsAudit;
+import com.game.biz.model.Resultat;
 import com.game.biz.model.enumeration.BadgeType;
 import com.game.biz.model.enumeration.EventType;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeMasterService;
 import com.game.biz.service.PointsAuditService;
 import com.game.biz.service.ResultatService;
-import com.game.biz.model.Resultat;
 import com.game.repository.biz.ResultatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +31,6 @@ public class ResultatServiceImpl implements ResultatService {
     private final BadgeMasterService badgeMasterService;
 
     private final PointsAuditService pointsAuditService;
-
-    private static int PRO_FOR_MASTER = 3;
 
     public ResultatServiceImpl(ResultatRepository resultatRepository, BadgeMasterService badgeMasterService, PointsAuditService pointsAuditService) {
         this.resultatRepository = resultatRepository;
@@ -113,6 +109,7 @@ public class ResultatServiceImpl implements ResultatService {
 
     @Override
     public void exchangeProForMaster(Long userID) throws NumberOfBadgesRequiredException {
+        int PRO_FOR_MASTER = 3;
         int badgesProNeeded = PRO_FOR_MASTER;
 
             for( BadgeType type : BadgeType.values()){

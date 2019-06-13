@@ -1,10 +1,5 @@
 package com.game.config;
 
-import java.net.InetSocketAddress;
-import java.util.Iterator;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import ch.qos.logback.classic.AsyncAppender;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -16,19 +11,11 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.filter.EvaluatorFilter;
 import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.FilterReply;
+import io.github.jhipster.config.JHipsterProperties;
 import net.logstash.logback.appender.LogstashTcpSocketAppender;
 import net.logstash.logback.composite.ContextJsonProvider;
 import net.logstash.logback.composite.GlobalCustomFieldsJsonProvider;
-import net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider;
-import net.logstash.logback.composite.loggingevent.LogLevelJsonProvider;
-import net.logstash.logback.composite.loggingevent.LoggerNameJsonProvider;
-import net.logstash.logback.composite.loggingevent.LoggingEventFormattedTimestampJsonProvider;
-import net.logstash.logback.composite.loggingevent.LoggingEventJsonProviders;
-import net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider;
-import net.logstash.logback.composite.loggingevent.MdcJsonProvider;
-import net.logstash.logback.composite.loggingevent.MessageJsonProvider;
-import net.logstash.logback.composite.loggingevent.StackTraceJsonProvider;
-import net.logstash.logback.composite.loggingevent.ThreadNameJsonProvider;
+import net.logstash.logback.composite.loggingevent.*;
 import net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder;
 import net.logstash.logback.encoder.LogstashEncoder;
 import net.logstash.logback.stacktrace.ShortenedThrowableConverter;
@@ -36,6 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+
+import java.net.InetSocketAddress;
+import java.util.Iterator;
 
 @Configuration
 public class LoggingConfiguration {
@@ -77,7 +67,7 @@ public class LoggingConfiguration {
 
     private void addJsonConsoleAppender(LoggerContext context) {
         log.info("Initializing Console logging");
-        
+
         // More documentation is available at: https://github.com/logstash/logstash-logback-encoder
         ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
         consoleAppender.setContext(context);
@@ -118,14 +108,14 @@ public class LoggingConfiguration {
         compositeJsonEncoder.start();
         return compositeJsonEncoder;
     }
-    
+
     private LogstashEncoder logstashEncoder() {
         final LogstashEncoder logstashEncoder = new LogstashEncoder();
         logstashEncoder.setThrowableConverter(throwableConverter());
         logstashEncoder.setCustomFields(customFields());
         return logstashEncoder;
     }
-    
+
     private LoggingEventJsonProviders jsonProviders(LoggerContext context) {
         final LoggingEventJsonProviders jsonProviders = new LoggingEventJsonProviders();
         jsonProviders.addArguments(new ArgumentsJsonProvider());
@@ -157,13 +147,13 @@ public class LoggingConfiguration {
         customFields.append("}");
         return customFields.toString();
     }
-    
+
     private LoggerNameJsonProvider loggerNameJsonProvider() {
         final LoggerNameJsonProvider loggerNameJsonProvider = new LoggerNameJsonProvider();
         loggerNameJsonProvider.setShortenedLoggerNameLength(20);
         return loggerNameJsonProvider;
     }
-    
+
     private StackTraceJsonProvider stackTraceJsonProvider() {
         StackTraceJsonProvider stackTraceJsonProvider = new StackTraceJsonProvider();
         stackTraceJsonProvider.setThrowableConverter(throwableConverter());
@@ -175,7 +165,7 @@ public class LoggingConfiguration {
         throwableConverter.setRootCauseFirst(true);
         return throwableConverter;
     }
-    
+
     private LoggingEventFormattedTimestampJsonProvider timestampJsonProvider() {
         final LoggingEventFormattedTimestampJsonProvider timestampJsonProvider = new LoggingEventFormattedTimestampJsonProvider();
         timestampJsonProvider.setTimeZone("UTC");
@@ -223,11 +213,11 @@ public class LoggingConfiguration {
      */
     class LogbackLoggerContextListener extends ContextAwareBase implements LoggerContextListener {
         private final JHipsterProperties jHipsterProperties;
-        
+
         private LogbackLoggerContextListener(JHipsterProperties jHipsterProperties) {
             this.jHipsterProperties = jHipsterProperties;
         }
-        
+
         @Override
         public boolean isResetResistant() {
             return true;

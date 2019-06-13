@@ -4,7 +4,6 @@ import com.game.GamejhipsterApp;
 import com.game.config.audit.AuditEventConverter;
 import com.game.domain.PersistentAuditEvent;
 import com.game.repository.PersistenceAuditEventRepository;
-
 import com.game.service.AuditEventService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

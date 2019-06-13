@@ -2,11 +2,10 @@ package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
 import com.game.biz.model.BadgeMaster;
-import com.game.repository.biz.BadgeMasterRepository;
 import com.game.biz.rest.BadgeMasterResource;
 import com.game.biz.service.BadgeMasterService;
+import com.game.repository.biz.BadgeMasterRepository;
 import com.game.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -103,11 +102,10 @@ public class BadgeMasterResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static BadgeMaster createUpdatedEntity(EntityManager em) {
-        BadgeMaster badgeMaster = new BadgeMaster()
+        return new BadgeMaster()
             .userId(UPDATED_USER_ID)
             .nbBadges(UPDATED_NB_BADGES)
             .validityDate(UPDATED_VALIDITY_DATE);
-        return badgeMaster;
     }
 
     @BeforeEach

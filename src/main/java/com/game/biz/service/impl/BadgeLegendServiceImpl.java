@@ -1,16 +1,14 @@
 package com.game.biz.service.impl;
 
-import com.game.biz.model.BadgeMaster;
+import com.game.biz.model.BadgeLegend;
 import com.game.biz.model.PointsAudit;
 import com.game.biz.model.enumeration.EventType;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
-import com.game.biz.model.BadgeLegend;
 import com.game.biz.service.PointsAuditService;
 import com.game.repository.biz.BadgeLegendRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +28,6 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
 
     private final PointsAuditService pointsAuditService;
 
-
-    private static int LEGEND_FOR_PRESENT = 3;
 
     public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository, PointsAuditService pointsAuditService) {
         this.badgeLegendRepository = badgeLegendRepository;
@@ -89,8 +85,7 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
 
     @Override
     public BadgeLegend findByUserId(Long userId) {
-        BadgeLegend bl = badgeLegendRepository.findByUserId(userId).orElse(new BadgeLegend(userId));
-        return bl;
+        return badgeLegendRepository.findByUserId(userId).orElse(new BadgeLegend(userId));
     }
 
     @Override
@@ -101,11 +96,12 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
     @Override
     public void exchangeLegendForPresent(Long userID) throws NumberOfBadgesRequiredException {
         BadgeLegend badge = badgeLegendRepository.findByUserId(userID).orElseGet(BadgeLegend::new);
+        int LEGEND_FOR_PRESENT = 3;
         if(badge.getNbBadges() < LEGEND_FOR_PRESENT){
             throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
         }
         int nbNew = 0;
-        for(int i = badge.getNbBadges() ; i >= LEGEND_FOR_PRESENT ; i = i-LEGEND_FOR_PRESENT){
+        for(int i = badge.getNbBadges(); i >= LEGEND_FOR_PRESENT; i = i- LEGEND_FOR_PRESENT){
             badge.setNbBadges(badge.getNbBadges() - LEGEND_FOR_PRESENT);
             nbNew++;
         }

@@ -2,11 +2,11 @@ package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
 import com.game.biz.model.Point;
-import com.game.repository.biz.PointRepository;
+import com.game.biz.model.enumeration.BadgeType;
 import com.game.biz.rest.PointResource;
 import com.game.biz.service.PointService;
+import com.game.repository.biz.PointRepository;
 import com.game.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -30,8 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.game.biz.model.enumeration.BadgeType;
 /**
  * Integration tests for the {@Link PointResource} REST controller.
  */
@@ -94,12 +92,11 @@ public class PointResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Point createEntity(EntityManager em) {
-        Point point = new Point()
+        return new Point()
             .userId(DEFAULT_USER_ID)
             .categorie(DEFAULT_CATEGORIE)
             .nbPoints(DEFAULT_NB_POINTS)
             .date(DEFAULT_DATE);
-        return point;
     }
     /**
      * Create an updated entity for this test.
@@ -108,12 +105,11 @@ public class PointResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Point createUpdatedEntity(EntityManager em) {
-        Point point = new Point()
+        return new Point()
             .userId(UPDATED_USER_ID)
             .categorie(UPDATED_CATEGORIE)
             .nbPoints(UPDATED_NB_POINTS)
             .date(UPDATED_DATE);
-        return point;
     }
 
     @BeforeEach

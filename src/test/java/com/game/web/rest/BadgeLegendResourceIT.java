@@ -2,11 +2,10 @@ package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
 import com.game.biz.model.BadgeLegend;
-import com.game.repository.biz.BadgeLegendRepository;
 import com.game.biz.rest.BadgeLegendResource;
 import com.game.biz.service.BadgeLegendService;
+import com.game.repository.biz.BadgeLegendRepository;
 import com.game.web.rest.errors.ExceptionTranslator;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -90,11 +89,10 @@ public class BadgeLegendResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static BadgeLegend createEntity(EntityManager em) {
-        BadgeLegend badgeLegend = new BadgeLegend()
+        return new BadgeLegend()
             .userId(DEFAULT_USER_ID)
             .nbBadges(DEFAULT_NB_BADGES)
             .validityDate(DEFAULT_VALIDITY_DATE);
-        return badgeLegend;
     }
     /**
      * Create an updated entity for this test.

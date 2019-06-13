@@ -1,6 +1,8 @@
 package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
+import com.game.biz.service.dto.PasswordChangeDTO;
+import com.game.biz.service.dto.UserDTO;
 import com.game.config.Constants;
 import com.game.domain.Authority;
 import com.game.domain.User;
@@ -9,13 +11,10 @@ import com.game.repository.UserRepository;
 import com.game.security.AuthoritiesConstants;
 import com.game.service.MailService;
 import com.game.service.UserService;
-import com.game.biz.service.dto.PasswordChangeDTO;
-import com.game.biz.service.dto.UserDTO;
 import com.game.web.rest.errors.ExceptionTranslator;
 import com.game.web.rest.vm.KeyAndPasswordVM;
 import com.game.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -31,13 +30,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**

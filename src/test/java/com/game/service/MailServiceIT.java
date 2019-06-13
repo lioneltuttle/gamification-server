@@ -1,8 +1,7 @@
 package com.game.service;
 
-import com.game.config.Constants;
-
 import com.game.GamejhipsterApp;
+import com.game.config.Constants;
 import com.game.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
