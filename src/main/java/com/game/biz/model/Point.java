@@ -18,9 +18,12 @@ public class Point implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+        columnDefinition = "NUMERIC(19,0)"
+    )
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "NUMERIC(19,0)")
     private Long userId;
 
     @Enumerated(EnumType.STRING)
@@ -28,7 +31,7 @@ public class Point implements Serializable {
     private BadgeType categorie;
 
     @Column(name = "nb_points")
-    private Integer nbPoints;
+    private Integer nbPoints = Integer.valueOf(0);
 
     @Column(name = "jhi_date")
     private LocalDate date;

@@ -160,9 +160,12 @@
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>7.2.2.jre8</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -326,7 +329,11 @@
             <scope>test</scope>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
-
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -777,6 +784,37 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
+                </plugin>
+                <!-- For AZURE -->
+                <plugin>
+                    <groupId>com.microsoft.azure</groupId>
+                    <artifactId>azure-webapp-maven-plugin</artifactId>
+                    <version>1.5.4</version>
+                    <configuration>
+                        <!-- Specify v2 schema -->
+                        <schemaVersion>v2</schemaVersion>
+                        <!-- App information -->
+                        <subscriptionId>72d58a06-900e-48b6-a22c-4899f18652a4</subscriptionId>
+                        <resourceGroup>OPE-Gamification</resourceGroup>
+                        <appName>Gamification-server</appName>
+                        <region>France Central</region>
+
+                        <!-- Java Runtime Stack for App on Linux-->
+                        <runtime>
+                            <os>linux</os>
+                            <javaVersion>jre8</javaVersion>
+                        </runtime>
+                        <deployment>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/target</directory>
+                                    <includes>
+                                        <include>*.jar</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </deployment>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -17,9 +17,12 @@ public class PointsAudit implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+        columnDefinition = "NUMERIC(19,0)"
+    )
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", columnDefinition = "NUMERIC(19,0)")
     private Long userId;
 
     @Enumerated(EnumType.STRING)
