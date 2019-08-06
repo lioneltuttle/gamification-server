@@ -5,6 +5,7 @@ import com.game.biz.model.enumeration.EventType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * A PointsAudit.
@@ -34,6 +35,9 @@ public class PointsAudit implements Serializable {
 
     @Column(name = "seen")
     private Boolean seen = true;
+
+    @Column(name = "jhi_date")
+    private LocalDate date;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -95,6 +99,19 @@ public class PointsAudit implements Serializable {
     public void setSeen(Boolean seen) {
         this.seen = seen;
     }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public PointsAudit date(LocalDate date) {
+        this.date = date;
+        return this;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -121,6 +138,7 @@ public class PointsAudit implements Serializable {
             ", subject='" + getSubject() + "'" +
             ", value='" + getValue() + "'" +
             ", seen='" + isSeen() + "'" +
+            ", date='" + getDate() + "'" +
             "}";
     }
 }

@@ -99,3 +99,14 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [running tests page]: https://www.jhipster.tech/documentation-archive/v6.0.1/running-tests/
 [code quality page]: https://www.jhipster.tech/documentation-archive/v6.0.1/code-quality/
 [setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.0.1/setting-up-ci/
+
+###### pour Heroku: 
+# D'abord verifier que graddle est installé
+npm i gradle
+#ensuite lancer ca, ca build et ca déploie avec un heroku.yaml
+
+jhipster heroku
+
+#heroku deploy:jar target/gamejhipster-0.0.1-SNAPSHOT.jar --app gamification-server
+#et pour les logs:
+heroku logs --tail

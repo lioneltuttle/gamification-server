@@ -35,9 +35,9 @@ spring:
    #   exclude:
     #    - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   datasource:
-    url: jdbc:postgresql://ec2-54-217-234-157.eu-west-1.compute.amazonaws.com:5432/d5nh36a42q1mb6?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&stringtype=unspecified
-    username: kwddungmenaaok
-    password: d68f57bf720f974877fdb2c6995eec13c93978dc7e77f43a343c1e272d70ab9d
+    url: jdbc:postgresql://ec2-54-247-170-5.eu-west-1.compute.amazonaws.com:5432/dc2g5trhnn2l2i?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&stringtype=unspecified
+    username: jpbwdltrsjofvr
+    password: 62bc1cf23dbc749f19af59084602ce3b4631b24d1637e94fbce1fadeb4389d09
     driverClassName: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
@@ -62,10 +62,10 @@ spring:
   liquibase:
     contexts: prod
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.gmail.com
+    port: 465
+    username: ltuttle.flat@gmail.com
+    password: Varcre1979
   thymeleaf:
     cache: true
 

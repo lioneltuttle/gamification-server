@@ -19,7 +19,11 @@
         {
             "fieldName": "seen",
             "fieldType": "Boolean"
-        }
+        },
+      {
+        "fieldName": "date",
+        "fieldType": "LocalDate"
+      }
     ],
     "changelogDate": "20190604232339",
     "dto": "no",

@@ -3,7 +3,7 @@
     "fields": [
         {
             "fieldName": "userId",
-            "fieldType": "Double"
+            "fieldType": "Long"
         },
         {
             "fieldName": "categorie",
