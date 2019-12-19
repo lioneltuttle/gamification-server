@@ -24,10 +24,81 @@ entity BadgeLegend {
     validityDate LocalDate
 }
 
+entity R2LastWeekReport {
+	reportId Double
+    reportDate LocalDate
+}
+
+entity R2LastWeekReportLine {
+	nomComplet String
+    rv1 String
+    dateDispo LocalDate
+    competencePrincipale String
+    exp Double
+    trancheExp String
+    ecole String
+    classeEcole String
+    fonctions String
+    dateRV1 LocalDate
+    rv2 String
+    metiers String
+    originePiste String
+}
+
+entity PropLastWeekReport {
+	reportId Double
+    reportDate LocalDate
+}
+
+entity PropLastWeekReportLine {
+	nomComplet String
+    rv1 String
+    dateDispo LocalDate
+    competencePrincipale String
+    exp Double
+    trancheExp String
+    ecole String
+    classeEcole String
+    fonctions String
+    dateRV1 LocalDate
+    rv2 String
+    metiers String
+    originePiste String
+}
+
+entity DemarrageLastWeekReport {
+	reportId Double
+    reportDate LocalDate
+}
+
+entity DemarrageLastWeekReportLine {
+	nomComplet String
+    rv1 String
+    dateDispo LocalDate
+    competencePrincipale String
+    exp Double
+    trancheExp String
+    ecole String
+    classeEcole String
+    fonctions String
+    dateRV1 LocalDate
+    rv2 String
+    metiers String
+    originePiste String
+    dateEntree LocalDate
+    dateDebut LocalDate
+}
+
 enum BadgeType {
     R2, PROP, FINANCE, ECOLE_FR, 
     DEMARRAGE_SANS_IC, 
     DEMARRAGE_2_SEMAINES
+}
+
+relationship OneToMany {
+	R2LastWeekReport{report} to R2LastWeekReportLine{reportLines}
+    PropLastWeekReport{report} to PropLastWeekReportLine{reportLines}
+    DemarrageLastWeekReport{report} to DemarrageLastWeekReportLine{reportLines}
 }
 
 // Set service options to all except few
