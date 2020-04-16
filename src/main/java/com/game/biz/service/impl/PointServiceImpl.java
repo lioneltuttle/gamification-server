@@ -62,7 +62,8 @@ public class PointServiceImpl implements PointService {
                 .userId(point.getUserId())
                 .seen(false)
                 .subject(EventType.BADGE_PRO)
-                .value(newBadges + " nouveau(x) badge(s) " + point.getCategorie() );
+                .value(newBadges + " nouveau(x) badge(s) " + point.getCategorie() )
+                .date(point.getDate());
             pointsAuditService.save(pa);
         }
 

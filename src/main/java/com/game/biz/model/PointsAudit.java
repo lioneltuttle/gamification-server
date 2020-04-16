@@ -36,7 +36,7 @@ public class PointsAudit implements Serializable {
     @Column(name = "seen")
     private Boolean seen = true;
 
-    @Column(name = "date")
+    @Column(name = "jhi_date")
     private LocalDate date;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
