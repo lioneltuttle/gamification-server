@@ -39,6 +39,9 @@ public class PointsAudit implements Serializable {
     @Column(name = "jhi_date")
     private LocalDate date;
 
+    @Column(name = "point")
+    private Long point;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -111,6 +114,19 @@ public class PointsAudit implements Serializable {
     public PointsAudit date(LocalDate date) {
         this.date = date;
         return this;
+    }
+
+    public Long getPoint() {
+        return point;
+    }
+
+    public PointsAudit point(Long point) {
+        this.point = point;
+        return this;
+    }
+
+    public void setPoint(Long point) {
+        this.point = point;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

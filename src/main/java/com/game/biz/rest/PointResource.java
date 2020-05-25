@@ -8,11 +8,13 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,7 +122,14 @@ public class PointResource {
     }
 
     @PostMapping("/AllPoints")
-    public List<Point> getLast2WPointsByUser(@RequestBody Long userId){
+    public List<Point> getLast2WPointsByUser(@RequestBody Long userId) {
         return pointService.findLast2WByUserId(userId);
+    }
+
+    @GetMapping("/pointsByPeriod")
+    public List<Point> getPointByUserAndPeriod(@RequestParam("userId") Long userId,
+                                            @RequestParam("begin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
+                                            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        return  pointService.findByUserIdAndPeriod(userId, begin.toLocalDate(), end.toLocalDate());
     }
 }

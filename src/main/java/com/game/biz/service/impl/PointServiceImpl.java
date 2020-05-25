@@ -118,4 +118,11 @@ public class PointServiceImpl implements PointService {
 
         return pointRepository.findAllByUserIdAndDateGreaterThan(userId, w2Ago);
     }
+
+    @Override
+    public List<Point> findByUserIdAndPeriod(Long userId, LocalDate begin, LocalDate end) {
+        return pointRepository.findAllByUserIdAndDateBetween(userId, begin, end);
+    }
+
+
 }
