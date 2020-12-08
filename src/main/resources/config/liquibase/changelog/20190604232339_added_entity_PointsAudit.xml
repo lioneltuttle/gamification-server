@@ -68,4 +68,10 @@
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+    <changeSet author="jinghong.yang" id="addColumn-point">
+        <addColumn tableName="points_audit">
+            <column name="point" type="bigint"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
