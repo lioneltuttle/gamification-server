@@ -124,5 +124,10 @@ public class PointServiceImpl implements PointService {
         return pointRepository.findAllByUserIdAndDateBetween(userId, begin, end);
     }
 
+    @Override
+    public List<Point> findByPeriod(LocalDate begin, LocalDate end) {
+        return pointRepository.findAllByDateBetween( begin, end);
+    }
+
 
 }
