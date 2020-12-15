@@ -7,4 +7,8 @@ import java.util.List;
 public interface RecapService {
 
     List<RecapDTO> fullRecap();
+
+    List<RecapDTO> inactiveRecap();
+
+    List<RecapDTO> adminRecap();
 }

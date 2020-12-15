@@ -88,8 +88,12 @@ public class AccountResource {
         Authority adminAuth = new Authority();
         adminAuth.setName(AuthoritiesConstants.ADMIN);
 
+        Authority userRole = new Authority();
+        userRole.setName(AuthoritiesConstants.USER);
+
         if(us.getAuthorities().contains(adminAuth)){
             authorities.remove(adminAuth);
+            authorities.add(userRole);
             us.setAuthorities(authorities);
         }
         else{
@@ -97,6 +101,51 @@ public class AccountResource {
             us.setAuthorities(authorities);
         }
         userService.save(us);
+    }
+
+
+    /**
+     * {@code POST  /setadmin} : set admin.
+     * @param userId the managed user View Model.
+     */
+    @PostMapping("/removeUserRole")
+    public void removeUserRole(@Valid @RequestBody Long userId) {
+
+        Optional<User> user = userService.getUserWithAuthorities(userId);
+        User us = user.get();
+        Set<Authority> authorities = us.getAuthorities();
+        Authority userRole = new Authority();
+        userRole.setName(AuthoritiesConstants.USER);
+        authorities.remove(userRole);
+        us.setAuthorities(authorities);
+        if(us.getAuthorities().isEmpty()){
+            userService.deactivateUser(us);
+        }
+        userService.save(us);
+    }
+
+    /**
+     * {@code POST  /setadmin} : set admin.
+     * @param userId the managed user View Model.
+     */
+    @PostMapping("/addUserRole")
+    public void addUserRole(@Valid @RequestBody Long userId) {
+
+        Optional<User> user = userService.getUserWithAuthorities(userId);
+        User us = user.get();
+
+        if(us.getActivationKey() != null){
+            userService.activateRegistration(us.getActivationKey());
+        }
+        else {
+            Set<Authority> authorities = us.getAuthorities();
+            Authority userRole = new Authority();
+            userRole.setName(AuthoritiesConstants.USER);
+            authorities.add(userRole);
+            us.setAuthorities(authorities);
+            userService.reactivateUser(us);
+            userService.save(us);
+        }
     }
 
     /**

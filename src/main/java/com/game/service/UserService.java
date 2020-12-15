@@ -64,6 +64,18 @@ public class UserService {
             });
     }
 
+    public void deactivateUser(User existingUser) {
+        log.debug("Deactivating user");
+        existingUser.setActivated(false);
+        this.save(existingUser);
+
+    }
+
+    public void reactivateUser(User existingUser) {
+        log.debug("Deactivating user");
+        existingUser.setActivated(true);
+    }
+
     public Optional<User> completePasswordReset(String newPassword, String key) {
         log.debug("Reset user password for reset key {}", key);
         return userRepository.findOneByResetKey(key)
@@ -290,7 +302,21 @@ public class UserService {
     }
 
     public List<UserDTO> findAllUsers(){
-        return userRepository.findAll().stream().filter(u -> u.getAuthorities().contains(new Authority("ROLE_USER"))).map(UserDTO::new).collect(Collectors.toList());
+        return findAllUsers("ROLE_USER");
+    }
+
+    public List<UserDTO> findAllAdmins(){
+        return findAllUsers("ROLE_ADMIN");
+    }
+
+    public List<UserDTO> findAllUsers(String role){
+        return userRepository.findAll().stream().filter(u -> u.getAuthorities().contains(new Authority(role))).map(UserDTO::new).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> findAllInactiveUsers(){
+
+        return userRepository
+            .findAllByActivatedIsFalse().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     /**
