@@ -47,4 +47,6 @@ public interface PointService {
     List<Point> findLast2WByUserId(Long userId);
 
     List<Point> findByUserIdAndPeriod(Long userId, LocalDate begin, LocalDate end);
+
+    List<Point> findByPeriod(LocalDate begin, LocalDate end);
 }

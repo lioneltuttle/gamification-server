@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing {@link Point}.
@@ -126,10 +125,46 @@ public class PointResource {
         return pointService.findLast2WByUserId(userId);
     }
 
-    @GetMapping("/pointsByPeriod")
+    @GetMapping("/pointsByUserAndPeriod")
     public List<Point> getPointByUserAndPeriod(@RequestParam("userId") Long userId,
                                             @RequestParam("begin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
                                             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         return  pointService.findByUserIdAndPeriod(userId, begin.toLocalDate(), end.toLocalDate());
+    }
+
+    @GetMapping("/pointsByPeriod")
+    public  List<Point> getPointByPeriod(
+                                               @RequestParam("begin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
+                                               @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+
+        List<Point> byPeriod = pointService.findByPeriod(begin.toLocalDate(), end.toLocalDate());
+        Map<Long, List<Point>> pointSummaryByUser = new HashMap<>();
+        Set<Point> res = new HashSet<>();
+        for(Point p : byPeriod){
+            if(!pointSummaryByUser.containsKey(p.getUserId())){
+                pointSummaryByUser.put(p.getUserId(), new ArrayList<>());
+            }
+            List<Point> pointList = pointSummaryByUser.get(p.getUserId());
+            Point foundPoint = null;
+            for (Point userPoint : pointList){
+                if(userPoint.getCategorie().equals(p.getCategorie())){
+                    foundPoint = userPoint;
+                    break;
+                }
+            }
+
+            if(foundPoint == null){
+                foundPoint = new Point();
+                foundPoint.setCategorie(p.getCategorie());
+                foundPoint.setUserId(p.getUserId());
+                foundPoint.setDate(p.getDate());
+                foundPoint.setNbPoints(0);
+                foundPoint.setId(p.getId());
+                pointList.add(foundPoint);
+            }
+            foundPoint.setNbPoints(foundPoint.getNbPoints() + p.getNbPoints());
+            res.add(foundPoint);
+        }
+        return new ArrayList<>(res);
     }
 }

@@ -3,8 +3,10 @@ package com.game.web.rest;
 
 import com.game.biz.service.dto.PasswordChangeDTO;
 import com.game.biz.service.dto.UserDTO;
+import com.game.domain.Authority;
 import com.game.domain.User;
 import com.game.repository.UserRepository;
+import com.game.security.AuthoritiesConstants;
 import com.game.security.SecurityUtils;
 import com.game.service.MailService;
 import com.game.service.UserService;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing the current user's account.
@@ -62,12 +65,87 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+        public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (!checkPasswordLength(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         mailService.sendActivationEmail(user);
+    }
+
+
+    /**
+     * {@code POST  /setadmin} : set admin.
+     * @param userId the managed user View Model.
+     */
+    @PostMapping("/setadmin")
+    public void setAdmin(@Valid @RequestBody Long userId) {
+
+        Optional<User> user = userService.getUserWithAuthorities(userId);
+        User us = user.get();
+
+        Set<Authority> authorities = us.getAuthorities();
+        Authority adminAuth = new Authority();
+        adminAuth.setName(AuthoritiesConstants.ADMIN);
+
+        Authority userRole = new Authority();
+        userRole.setName(AuthoritiesConstants.USER);
+
+        if(us.getAuthorities().contains(adminAuth)){
+            authorities.remove(adminAuth);
+            authorities.add(userRole);
+            us.setAuthorities(authorities);
+        }
+        else{
+            authorities.add(adminAuth);
+            us.setAuthorities(authorities);
+        }
+        userService.save(us);
+    }
+
+
+    /**
+     * {@code POST  /setadmin} : set admin.
+     * @param userId the managed user View Model.
+     */
+    @PostMapping("/removeUserRole")
+    public void removeUserRole(@Valid @RequestBody Long userId) {
+
+        Optional<User> user = userService.getUserWithAuthorities(userId);
+        User us = user.get();
+        Set<Authority> authorities = us.getAuthorities();
+        Authority userRole = new Authority();
+        userRole.setName(AuthoritiesConstants.USER);
+        authorities.remove(userRole);
+        us.setAuthorities(authorities);
+        if(us.getAuthorities().isEmpty()){
+            userService.deactivateUser(us);
+        }
+        userService.save(us);
+    }
+
+    /**
+     * {@code POST  /setadmin} : set admin.
+     * @param userId the managed user View Model.
+     */
+    @PostMapping("/addUserRole")
+    public void addUserRole(@Valid @RequestBody Long userId) {
+
+        Optional<User> user = userService.getUserWithAuthorities(userId);
+        User us = user.get();
+
+        if(us.getActivationKey() != null){
+            userService.activateRegistration(us.getActivationKey());
+        }
+        else {
+            Set<Authority> authorities = us.getAuthorities();
+            Authority userRole = new Authority();
+            userRole.setName(AuthoritiesConstants.USER);
+            authorities.add(userRole);
+            us.setAuthorities(authorities);
+            userService.reactivateUser(us);
+            userService.save(us);
+        }
     }
 
     /**
@@ -77,7 +155,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @GetMapping("/activate")
-    public void activateAccount(@RequestParam(value = "key") String key) {
+    public void activateAccount( @RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");

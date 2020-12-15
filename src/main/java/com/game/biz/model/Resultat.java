@@ -136,9 +136,18 @@ public class Resultat implements Serializable {
     }
 
     private int generateBadges(int points, int nbPointsForBadge){
-        this.points = points%nbPointsForBadge;
-        int newBadges =  Math.floorDiv(points, nbPointsForBadge);
-        this.nbBadges += newBadges;
+
+        int totalConvertedPoints = points + this.nbBadges*nbPointsForBadge;
+        if(totalConvertedPoints<0){
+            totalConvertedPoints = 0;
+        }
+        this.points = totalConvertedPoints%nbPointsForBadge;
+        int totalBadges = Math.floorDiv(totalConvertedPoints, nbPointsForBadge);
+        int newBadges = Math.floorDiv(totalConvertedPoints, nbPointsForBadge) - this.nbBadges;
+        if(newBadges <0){
+            newBadges = 0;
+        }
+        this.nbBadges = totalBadges;
         return newBadges;
     }
 }
