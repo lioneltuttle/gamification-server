@@ -37,6 +37,9 @@ public class Point implements Serializable {
     private LocalDate date;
 
     public Point(){}
+    public Point(Point p){
+
+    }
     public Point(Long userId){
         this.userId = userId;
     }

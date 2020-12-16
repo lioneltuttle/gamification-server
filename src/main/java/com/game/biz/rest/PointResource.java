@@ -1,6 +1,7 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.Point;
+import com.game.biz.model.PointBuilder;
 import com.game.biz.service.PointService;
 import com.game.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -140,13 +141,16 @@ public class PointResource {
         List<Point> byPeriod = pointService.findByPeriod(begin.toLocalDate(), end.toLocalDate());
         Map<Long, List<Point>> pointSummaryByUser = new HashMap<>();
         Set<Point> res = new HashSet<>();
-        for(Point p : byPeriod){
+
+        byPeriod.stream().forEach(p -> {
+
             if(!pointSummaryByUser.containsKey(p.getUserId())){
                 pointSummaryByUser.put(p.getUserId(), new ArrayList<>());
             }
             List<Point> pointList = pointSummaryByUser.get(p.getUserId());
             Point foundPoint = null;
             for (Point userPoint : pointList){
+                // we cannot stream here since we have to assign foundPoint and break when found
                 if(userPoint.getCategorie().equals(p.getCategorie())){
                     foundPoint = userPoint;
                     break;
@@ -154,17 +158,16 @@ public class PointResource {
             }
 
             if(foundPoint == null){
-                foundPoint = new Point();
-                foundPoint.setCategorie(p.getCategorie());
-                foundPoint.setUserId(p.getUserId());
-                foundPoint.setDate(p.getDate());
-                foundPoint.setNbPoints(0);
-                foundPoint.setId(p.getId());
+                foundPoint = PointBuilder.createPointFromOther(p);
                 pointList.add(foundPoint);
             }
-            foundPoint.setNbPoints(foundPoint.getNbPoints() + p.getNbPoints());
+            else {
+                foundPoint.setNbPoints(foundPoint.getNbPoints() + p.getNbPoints());
+            }
             res.add(foundPoint);
-        }
+            }
+
+        );
         return new ArrayList<>(res);
     }
 }
