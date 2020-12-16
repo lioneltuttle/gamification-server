@@ -1,5 +1,8 @@
 package com.game.biz.task;
 
+import com.game.biz.model.R2LastWeekReport;
+import com.game.biz.model.R2LastWeekReportLine;
+import com.game.biz.service.impl.BadgeMasterServiceImpl;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -8,6 +11,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -17,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 
 public class SalesForceRetrieve {
 
@@ -26,6 +32,8 @@ public class SalesForceRetrieve {
     private static final String GRANTSERVICE = "/services/oauth2/token?grant_type=password";
     private static final String CLIENTID = "3MVG95G8WxiwV5Pt6EdgAxiu4mfR_bfGNpMjndpYf80UduPHFWrtFYtnJzCawn05TJYTFa7dI4z2gO81Kue.U";
     private static final String CLIENTSECRET = "A447E622428EA6C871F4CCB2049C9E8AA96E71BA61ED8FA594051B7AE56074CB";
+
+    private static final Logger log = LoggerFactory.getLogger(SalesForceRetrieve.class);
 
     private static String baseUri;
     private static Header oauthHeader;
@@ -44,8 +52,9 @@ public class SalesForceRetrieve {
             "&client_id=" + CLIENTID +
             "&client_secret=" + CLIENTSECRET +
             "&username=" + USERNAME +
-            "&password=" + PASSWORD;
+            "&password=" + PASSWORD ;
 
+        log.debug(loginURL);
         // Login requests must be POSTs
         HttpPost httpPost = new HttpPost(loginURL);
         HttpResponse response = null;
@@ -54,14 +63,14 @@ public class SalesForceRetrieve {
             // Execute the login POST request
             response = httpclient.execute(httpPost);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error("",ioException);
         }
 
         // verify response is HTTP OK
         assert response != null;
         final int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != org.apache.http.HttpStatus.SC_OK) {
-            System.out.println("Error authenticating to Force.com: " + statusCode);
+            log.error("Error authenticating to Force.com: " + statusCode);
             // Error is in EntityUtils.toString(response.getEntity())
             return;
         }
@@ -70,7 +79,7 @@ public class SalesForceRetrieve {
         try {
             getResult = EntityUtils.toString(response.getEntity());
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error("",ioException);
         }
 
         JSONObject jsonObject;
@@ -82,20 +91,20 @@ public class SalesForceRetrieve {
             loginAccessToken = jsonObject.getString("access_token");
             loginInstanceUrl = jsonObject.getString("instance_url");
         } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
+            log.error("",jsonException);
         }
 
         baseUri = loginInstanceUrl + REST_ENDPOINT + API_VERSION;
         oauthHeader = new BasicHeader("Authorization", "OAuth " + loginAccessToken);
-        System.out.println("oauthHeader1: " + oauthHeader);
-        System.out.println("\n" + response.getStatusLine());
-        System.out.println("Successful login");
-        System.out.println("instance URL: " + loginInstanceUrl);
-        System.out.println("access token/session ID: " + loginAccessToken);
-        System.out.println("baseUri: " + baseUri);
+        log.debug("oauthHeader1: " + oauthHeader);
+        log.debug("\n" + response.getStatusLine());
+        log.debug("Successful login");
+        log.debug("instance URL: " + loginInstanceUrl);
+        log.debug("access token/session ID: " + loginAccessToken);
+        log.debug("baseUri: " + baseUri);
 
         // Run codes to query, isnert, update and delete records in Salesforce using REST API
-        getReport();
+        getR2Report();
 
         // release connection
         httpPost.releaseConnection();
@@ -103,8 +112,8 @@ public class SalesForceRetrieve {
 
 
     // Create Leads using REST HttpPost
-    private static void getReport() {
-        System.out.println("\n_______________ Get Report _______________");
+    private static void getR2Report() {
+        log.debug("\n_______________ Get Report _______________");
 
         String uri = baseUri + "/analytics/reports/00O2o000007NfkQEAS?includeDetails=true";
         try {
@@ -127,27 +136,31 @@ public class SalesForceRetrieve {
                 String response_string = EntityUtils.toString(response.getEntity());
                 try {
                     JSONObject json = new JSONObject(response_string);
-                    System.out.println("JSON result of Query:\n" + json.toString(1));
+                    log.debug("JSON result of Query:\n" + json.toString(1));
                     JSONArray rows = json.getJSONObject("factMap").getJSONObject("T!T").getJSONArray("rows");
+                    R2LastWeekReport r2LastWeekReport = new R2LastWeekReport();
+                    r2LastWeekReport.setReportDate(LocalDate.now());
                     for (int i = 0; i < rows.length(); i++) {
                         JSONArray dataCells = rows.getJSONObject(i).getJSONArray("dataCells");
+                        R2LastWeekReportLine line = new R2LastWeekReportLine();
+                        r2LastWeekReport.addReport(line);
                         StringBuilder sb = new StringBuilder();
                         for (int j = 0; j < dataCells.length(); j++) {
-                            sb.append(dataCells.getJSONObject(j).get("label")).append("\t");
+                            line.set(dataCells.getJSONObject(j).get("label").toString());
                         }
-                        System.out.println(sb);
+                        log.debug(line.toString());
                     }
                 } catch (JSONException je) {
-                    je.printStackTrace();
+                    log.error("",je);
                 }
             } else {
-                System.out.println("Query was unsuccessful. Status code returned is " + statusCode);
-                System.out.println("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
-                System.out.println(getBody(response.getEntity().getContent()));
+                log.debug("Query was unsuccessful. Status code returned is " + statusCode);
+                log.debug("An error has occured. Http status: " + response.getStatusLine().getStatusCode());
+                log.debug(getBody(response.getEntity().getContent()));
                 System.exit(-1);
             }
         } catch (IOException | NullPointerException ioe) {
-            ioe.printStackTrace();
+            log.error("",ioe);
         }
     }
 
@@ -164,7 +177,7 @@ public class SalesForceRetrieve {
             }
             in.close();
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            log.error("",ioe);;
         }
         return result.toString();
     }

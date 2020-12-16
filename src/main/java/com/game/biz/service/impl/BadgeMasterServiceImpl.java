@@ -108,7 +108,7 @@ public class BadgeMasterServiceImpl implements BadgeMasterService {
             legend.setNbBadges(legend.getNbBadges() +1);
             nbNew++;
         }
-        PointsAudit audit = new PointsAudit().userId(userID).subject(EventType.EXCHANGE_MASTER_FOR_LEGEND).seen(true).value(""+nbNew);
+            PointsAudit audit = new PointsAudit().userId(userID).subject(EventType.EXCHANGE_MASTER_FOR_LEGEND).seen(true).value(""+nbNew);
         pointsAuditService.save(audit);
         badgeMasterRepository.save(badge);
         badgeLegendService.save(legend);
