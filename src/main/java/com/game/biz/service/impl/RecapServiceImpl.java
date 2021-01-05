@@ -54,4 +54,35 @@ public class RecapServiceImpl implements RecapService {
         return retour;
     }
 
+    public List<RecapDTO> adminRecap(){
+        List<RecapDTO> retour = new ArrayList<>();
+
+        List<UserDTO> users = userService.findAllAdmins();
+
+        users.stream().forEach(userDTO -> {
+            retour.add( new RecapDTO(userDTO,
+                resultatService.findByUserId(userDTO.getId()),
+                (int)badgeMasterService.getNbBadgesMaster(userDTO.getId()),
+                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()) ) );
+        });
+
+        return retour;
+    }
+
+    public List<RecapDTO> inactiveRecap(){
+        List<RecapDTO> retour = new ArrayList<>();
+
+        List<UserDTO> users = userService.findAllInactiveUsers();
+
+        users.stream().forEach(userDTO -> {
+            retour.add( new RecapDTO(userDTO,
+                resultatService.findByUserId(userDTO.getId()),
+                (int)badgeMasterService.getNbBadgesMaster(userDTO.getId()),
+                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()) ) );
+        });
+
+        return retour;
+    }
+
+
 }

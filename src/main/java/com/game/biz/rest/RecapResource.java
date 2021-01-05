@@ -33,6 +33,23 @@ public class RecapResource {
     }
 
     /**
+     * GET getInactiveRecap
+     */
+    @GetMapping("/get-inactive-recap")
+    public List<RecapDTO> getInactiveRecap() {
+        return recapService.inactiveRecap();
+    }
+
+    /**
+     * GET getAdminRecap
+     */
+    @GetMapping("/get-admin-recap")
+    public List<RecapDTO> getAdminRecap() {
+        return recapService.adminRecap();
+    }
+
+
+    /**
     * GET getRecap
     */
     @GetMapping("/get-recap")

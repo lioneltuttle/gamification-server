@@ -1,6 +1,7 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.Point;
+import com.game.biz.model.PointBuilder;
 import com.game.biz.service.PointService;
 import com.game.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -8,13 +9,14 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * REST controller for managing {@link Point}.
@@ -120,7 +122,52 @@ public class PointResource {
     }
 
     @PostMapping("/AllPoints")
-    public List<Point> getLast2WPointsByUser(@RequestBody Long userId){
+    public List<Point> getLast2WPointsByUser(@RequestBody Long userId) {
         return pointService.findLast2WByUserId(userId);
+    }
+
+    @GetMapping("/pointsByUserAndPeriod")
+    public List<Point> getPointByUserAndPeriod(@RequestParam("userId") Long userId,
+                                            @RequestParam("begin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
+                                            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        return  pointService.findByUserIdAndPeriod(userId, begin.toLocalDate(), end.toLocalDate());
+    }
+
+    @GetMapping("/pointsByPeriod")
+    public  List<Point> getPointByPeriod(
+                                               @RequestParam("begin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
+                                               @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+
+        List<Point> byPeriod = pointService.findByPeriod(begin.toLocalDate(), end.toLocalDate());
+        Map<Long, List<Point>> pointSummaryByUser = new HashMap<>();
+        Set<Point> res = new HashSet<>();
+
+        byPeriod.stream().forEach(p -> {
+
+            if(!pointSummaryByUser.containsKey(p.getUserId())){
+                pointSummaryByUser.put(p.getUserId(), new ArrayList<>());
+            }
+            List<Point> pointList = pointSummaryByUser.get(p.getUserId());
+            Point foundPoint = null;
+            for (Point userPoint : pointList){
+                // we cannot stream here since we have to assign foundPoint and break when found
+                if(userPoint.getCategorie().equals(p.getCategorie())){
+                    foundPoint = userPoint;
+                    break;
+                }
+            }
+
+            if(foundPoint == null){
+                foundPoint = PointBuilder.createPointFromOther(p);
+                pointList.add(foundPoint);
+            }
+            else {
+                foundPoint.setNbPoints(foundPoint.getNbPoints() + p.getNbPoints());
+            }
+            res.add(foundPoint);
+            }
+
+        );
+        return new ArrayList<>(res);
     }
 }

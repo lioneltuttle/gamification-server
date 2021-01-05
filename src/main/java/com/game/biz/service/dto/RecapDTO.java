@@ -13,6 +13,8 @@ public class RecapDTO {
 
     private Map<BadgeType, Integer> badgesPro = new HashMap<>();
 
+    private Map<BadgeType, Integer> points = new HashMap<>();
+
     private Integer badgeMaster;
 
     private Integer badgeLegend;
@@ -23,6 +25,7 @@ public class RecapDTO {
     public RecapDTO(UserDTO user , List<Resultat> resultats, int badgeLegend, int badgeMaster){
         this.user = user;
         resultats.stream().forEach(resultat ->  badgesPro.put(resultat.getCategorie(), resultat.getNbBadges()) );
+        resultats.stream().forEach(resultat ->  points.put(resultat.getCategorie(), resultat.getPoints()) );
         this.badgeMaster = badgeMaster;
         this.badgeLegend = badgeLegend;
     }
@@ -33,6 +36,14 @@ public class RecapDTO {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public Map<BadgeType, Integer> getPoints() {
+        return points;
+    }
+
+    public void setPoints(Map<BadgeType, Integer> points) {
+        this.points = points;
     }
 
     public Map<BadgeType, Integer> getBadgesPro() {

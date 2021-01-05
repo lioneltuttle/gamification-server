@@ -16,4 +16,8 @@ import java.util.List;
 public interface PointRepository extends JpaRepository<Point, Long> {
 
     List<Point> findAllByUserIdAndDateGreaterThan(Long userId, LocalDate d);
+
+    List<Point> findAllByUserIdAndDateBetween(Long userId, LocalDate begin, LocalDate end);
+
+    List<Point> findAllByDateBetween(LocalDate begin, LocalDate end);
 }

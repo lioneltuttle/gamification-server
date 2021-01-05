@@ -1,0 +1,30 @@
+{
+    "name": "PropLastWeekReport",
+    "fields": [
+        {
+            "fieldName": "reportId",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "reportDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "propLastWeekReportLine",
+            "otherEntityRelationshipName": "reportLines",
+            "relationshipName": "report"
+        }
+    ],
+    "changelogDate": "20191224003515",
+    "entityTableName": "prop_last_week_report",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

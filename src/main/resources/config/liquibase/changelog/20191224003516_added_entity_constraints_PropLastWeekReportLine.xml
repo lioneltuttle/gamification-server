@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity PropLastWeekReportLine.
+    -->
+    <changeSet id="20191224003516-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="report_lines_id"
+                                 baseTableName="prop_last_week_report_line"
+                                 constraintName="fk_prop_last_week_report_line_report_lines_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="prop_last_week_report"/>
+
+    </changeSet>
+</databaseChangeLog>

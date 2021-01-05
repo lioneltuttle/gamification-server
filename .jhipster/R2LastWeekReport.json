@@ -1,0 +1,30 @@
+{
+    "name": "R2LastWeekReport",
+    "fields": [
+        {
+            "fieldName": "reportId",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "reportDate",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "r2LastWeekReportLine",
+            "otherEntityRelationshipName": "reportLines",
+            "relationshipName": "report"
+        }
+    ],
+    "changelogDate": "20191224003513",
+    "entityTableName": "r_2_last_week_report",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

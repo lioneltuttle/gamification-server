@@ -1,0 +1,75 @@
+{
+    "name": "R2LastWeekReportLine",
+    "fields": [
+        {
+            "fieldName": "nomComplet",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "rv1",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateDispo",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "competencePrincipale",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "exp",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "trancheExp",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ecole",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "classeEcole",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fonctions",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "dateRV1",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "rv2",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "metiers",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "originePiste",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "r2LastWeekReport",
+            "otherEntityRelationshipName": "report",
+            "relationshipName": "reportLines",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191224003514",
+    "entityTableName": "r_2_last_week_report_line",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

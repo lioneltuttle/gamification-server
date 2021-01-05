@@ -2,6 +2,7 @@ package com.game.biz.service;
 
 import com.game.biz.model.Point;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +45,8 @@ public interface PointService {
     void delete(Long id);
 
     List<Point> findLast2WByUserId(Long userId);
+
+    List<Point> findByUserIdAndPeriod(Long userId, LocalDate begin, LocalDate end);
+
+    List<Point> findByPeriod(LocalDate begin, LocalDate end);
 }
