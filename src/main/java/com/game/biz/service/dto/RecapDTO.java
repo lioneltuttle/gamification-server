@@ -22,7 +22,7 @@ public class RecapDTO {
     private boolean shouldReceivePresent;
 
 
-    public RecapDTO(UserDTO user , List<Resultat> resultats, int badgeLegend, int badgeMaster){
+    public RecapDTO(UserDTO user , List<Resultat> resultats, int badgeMaster, int badgeLegend){
         this.user = user;
         resultats.stream().forEach(resultat ->  badgesPro.put(resultat.getCategorie(), resultat.getNbBadges()) );
         resultats.stream().forEach(resultat ->  points.put(resultat.getCategorie(), resultat.getPoints()) );

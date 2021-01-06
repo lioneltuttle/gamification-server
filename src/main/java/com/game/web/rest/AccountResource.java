@@ -10,6 +10,7 @@ import com.game.security.AuthoritiesConstants;
 import com.game.security.SecurityUtils;
 import com.game.service.MailService;
 import com.game.service.UserService;
+import com.game.service.mapper.UserMapper;
 import com.game.web.rest.errors.EmailAlreadyUsedException;
 import com.game.web.rest.errors.EmailNotFoundException;
 import com.game.web.rest.errors.InvalidPasswordException;
@@ -19,6 +20,7 @@ import com.game.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing the current user's account.
@@ -33,6 +36,8 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+
+
 
     private static class AccountResourceException extends RuntimeException {
         private AccountResourceException(String message) {
@@ -80,9 +85,10 @@ public class AccountResource {
      */
     @PostMapping("/setadmin")
     public void setAdmin(@Valid @RequestBody Long userId) {
-
+        UserMapper userMapper = new UserMapper();
         Optional<User> user = userService.getUserWithAuthorities(userId);
         User us = user.get();
+        UserDTO usDto = userMapper.userToUserDTO(us);
 
         Set<Authority> authorities = us.getAuthorities();
         Authority adminAuth = new Authority();
@@ -94,13 +100,17 @@ public class AccountResource {
         if(us.getAuthorities().contains(adminAuth)){
             authorities.remove(adminAuth);
             authorities.add(userRole);
-            us.setAuthorities(authorities);
         }
         else{
             authorities.add(adminAuth);
-            us.setAuthorities(authorities);
         }
+        us.setAuthorities(authorities);
+        usDto.setAuthorities(
+            authorities.stream().map(e->e.getName()).collect(Collectors.toSet())
+        );
+
         userService.save(us);
+        userService.updateUser(usDto);
     }
 
 
