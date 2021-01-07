@@ -43,7 +43,31 @@ public class NotificationResource {
     @PostMapping("/notification")
     public void sendNotification(@RequestBody List<String> datas) {
         log.debug("REST request to send notification : {}", datas.get(0));
-        notificationService.sendPushNotification(Long.parseLong(datas.get(0)), datas.get(1),datas.get(2),datas.get(3),datas.get(4));
+        notificationService.sendPushNotification(Long.parseLong(datas.get(0)), datas.get(1),datas.get(2),datas.get(3),datas.get(4), datas.size()>5);
+    }
+
+    /**
+     * {@code POST  /admintag} : Create a new pushNotification.
+     *
+     * @param userId the user id.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/admintag")
+    public void setAdminTag(@RequestBody Long userId) {
+        log.debug("REST request to grant adminNotifs : {}", userId);
+        notificationService.switchTagAdmin(userId, true);
+    }
+
+    /**
+     * {@code POST  /admintag} : Create a new pushNotification.
+     *
+     * @param userId the user id.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/usertag")
+    public void removeAdminTag(@RequestBody Long userId) {
+        log.debug("REST request to remove adminNotifs : {}", userId);
+        notificationService.switchTagAdmin(userId, false);
     }
 
 

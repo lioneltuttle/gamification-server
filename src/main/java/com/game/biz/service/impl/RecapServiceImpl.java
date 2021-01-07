@@ -35,12 +35,15 @@ public class RecapServiceImpl implements RecapService {
 
     private final NotificationService notificationService;
 
-    public RecapServiceImpl(ResultatRepository resultatRepository, BadgeMasterService badgeMasterService, BadgeLegendService badgeLegendService, UserService userService, ResultatService resultatService, NotificationService notificationService) {
+    private final PresentService presentService;
+
+    public RecapServiceImpl(ResultatRepository resultatRepository, BadgeMasterService badgeMasterService, BadgeLegendService badgeLegendService, UserService userService, ResultatService resultatService, NotificationService notificationService, PresentService presentService) {
         this.badgeMasterService = badgeMasterService;
         this.badgeLegendService = badgeLegendService;
         this.userService = userService;
         this.resultatService = resultatService;
         this.notificationService = notificationService;
+        this.presentService = presentService;
     }
 
     public List<RecapDTO> fullRecap(){
@@ -52,7 +55,10 @@ public class RecapServiceImpl implements RecapService {
             retour.add( new RecapDTO(userDTO,
             resultatService.findByUserId(userDTO.getId()),
                 (int)badgeMasterService.getNbBadgesMaster(userDTO.getId()),
-                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()) ) );
+                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()),
+                (int)presentService.getNbConsumedPresents(userDTO.getId()),
+                (int)presentService.getNbPendingPresents(userDTO.getId())
+            ) );
         });
 
         return retour;
@@ -67,7 +73,9 @@ public class RecapServiceImpl implements RecapService {
             retour.add( new RecapDTO(userDTO,
                 resultatService.findByUserId(userDTO.getId()),
                 (int)badgeMasterService.getNbBadgesMaster(userDTO.getId()),
-                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()) ) );
+                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()),
+                (int)presentService.getNbConsumedPresents(userDTO.getId()),
+                (int)presentService.getNbPendingPresents(userDTO.getId())) );
         });
 
         return retour;
@@ -82,7 +90,9 @@ public class RecapServiceImpl implements RecapService {
             retour.add( new RecapDTO(userDTO,
                 resultatService.findByUserId(userDTO.getId()),
                 (int)badgeMasterService.getNbBadgesMaster(userDTO.getId()),
-                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()) ) );
+                (int)badgeLegendService.getNbBadgesLegend(userDTO.getId()),
+                (int)presentService.getNbConsumedPresents(userDTO.getId()),
+                (int)presentService.getNbPendingPresents(userDTO.getId())) );
         });
 
         return retour;

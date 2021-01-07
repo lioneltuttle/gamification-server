@@ -11,6 +11,8 @@ import java.util.Optional;
  */
 public interface NotificationService {
 
+    void sendPushNotification(Long userId, String englishTitle, String frenchTitle, String englishMessage, String frenchMessage, boolean isAdmin);
     void sendPushNotification(Long userId, String englishTitle, String frenchTitle, String englishMessage, String frenchMessage);
+    void switchTagAdmin(Long userId, boolean isAdmin ) ;
 
 }

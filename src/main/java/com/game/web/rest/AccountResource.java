@@ -1,6 +1,10 @@
 package com.game.web.rest;
 
 
+import com.game.biz.model.Point;
+import com.game.biz.model.enumeration.BadgeType;
+import com.game.biz.service.NotificationService;
+import com.game.biz.service.PointService;
 import com.game.biz.service.dto.PasswordChangeDTO;
 import com.game.biz.service.dto.UserDTO;
 import com.game.domain.Authority;
@@ -51,13 +55,19 @@ public class AccountResource {
 
     private final UserService userService;
 
+    private final NotificationService notificationService;
+
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final PointService pointService;
+
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, NotificationService notificationService, PointService pointService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.notificationService = notificationService;
+        this.pointService =  pointService;
     }
 
     /**
@@ -100,9 +110,11 @@ public class AccountResource {
         if(us.getAuthorities().contains(adminAuth)){
             authorities.remove(adminAuth);
             authorities.add(userRole);
+            notificationService.switchTagAdmin(userId, false);
         }
         else{
             authorities.add(adminAuth);
+            notificationService.switchTagAdmin(userId, true);
         }
         us.setAuthorities(authorities);
         usDto.setAuthorities(
@@ -155,6 +167,12 @@ public class AccountResource {
             us.setAuthorities(authorities);
             userService.reactivateUser(us);
             userService.save(us);
+        }
+
+        for( BadgeType t : BadgeType.values()) {
+            Point point = new Point(user.get().getId());
+            point.setCategorie(t);
+            pointService.save(point);
         }
     }
 

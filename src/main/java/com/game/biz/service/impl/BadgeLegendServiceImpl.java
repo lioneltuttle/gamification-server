@@ -6,7 +6,10 @@ import com.game.biz.model.enumeration.EventType;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
 import com.game.biz.service.PointsAuditService;
+import com.game.biz.service.NotificationService;
+import com.game.domain.User;
 import com.game.repository.biz.BadgeLegendRepository;
+import com.game.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,10 +31,15 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
 
     private final PointsAuditService pointsAuditService;
 
+    private final NotificationService notificationService;
 
-    public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository, PointsAuditService pointsAuditService) {
+    private final UserService userService;
+
+    public BadgeLegendServiceImpl(BadgeLegendRepository badgeLegendRepository, PointsAuditService pointsAuditService, NotificationService notificationService, UserService userService) {
         this.badgeLegendRepository = badgeLegendRepository;
         this.pointsAuditService  = pointsAuditService;
+        this.notificationService = notificationService;
+        this.userService = userService;
     }
 
     /**
@@ -96,6 +104,7 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
     @Override
     public void exchangeLegendForPresent(Long userID) throws NumberOfBadgesRequiredException {
         BadgeLegend badge = badgeLegendRepository.findByUserId(userID).orElseGet(BadgeLegend::new);
+        Optional<User> userWithAuthorities = userService.getUserWithAuthorities(userID);
         int LEGEND_FOR_PRESENT = 3;
         if(badge.getNbBadges() < LEGEND_FOR_PRESENT){
             throw new NumberOfBadgesRequiredException("Pas assez de badges : " + badge.getNbBadges());
@@ -108,6 +117,14 @@ public class BadgeLegendServiceImpl implements BadgeLegendService {
         PointsAudit audit = new PointsAudit().userId(userID).subject(EventType.PRESENT_WON).seen(false).value(""+nbNew);
         pointsAuditService.save(audit);
         badgeLegendRepository.save(badge);
+        User user = userWithAuthorities.get();
+        notificationService.sendPushNotification(Long.valueOf(-1),
+            user.getFirstName()+ " " +user.getLastName()+ " requests a present!",
+            user.getFirstName()+ " " +user.getLastName()+ " demande sa récompense!",
+            user.getFirstName()+ " " +user.getLastName()+ " requests a present!",
+            user.getFirstName()+ " " +user.getLastName()+ " demande sa récompense!",true
+            );
+
     }
 
 
