@@ -173,6 +173,7 @@ public class AccountResource {
             Point point = new Point(user.get().getId());
             point.setCategorie(t);
             pointService.save(point);
+
         }
     }
 

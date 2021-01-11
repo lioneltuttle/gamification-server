@@ -13,15 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Scanner;
 
 /**
  * Service Implementation for managing {@link Point}.
@@ -177,7 +173,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<Point> findByUserIdAndPeriod(Long userId, LocalDate begin, LocalDate end) {
-        return pointRepository.findAllByUserIdAndDateBetween(userId, begin, end);
+        return pointRepository.findAllByUserIdAndDateBetweenOrderByDateDesc(userId, begin, end);
     }
 
     @Override
