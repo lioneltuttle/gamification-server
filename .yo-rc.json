@@ -3,7 +3,7 @@
     "promptValues": {
       "packageName": "com.game"
     },
-    "jhipsterVersion": "6.0.1",
+    "jhipsterVersion": "6.10.5",
     "applicationType": "monolith",
     "baseName": "gamejhipster",
     "packageName": "com.game",
@@ -22,9 +22,7 @@
     "buildTool": "maven",
     "enableSwaggerCodegen": false,
     "jwtSecretKey": "ODJjNGE2Y2M3OGRkMDM2MGRiZTk3MmNkNDcyMGQ1NDBkM2NiYzBkZTNhNDE1OWQ1ZWIxYWI5NThmNzg5NDY4ZWFlMjQxNTcxNDdlYmQ0YWIyYmQzZWMxNThkN2ZjZWU4MTA1MDI3Yzg0NGJiNTJiMWM5MGQ1OWNhOTdhMTQ0OGU=",
-    "testFrameworks": [
-      "cucumber"
-    ],
+    "testFrameworks": ["cucumber"],
     "jhiPrefix": "jhi",
     "entitySuffix": "",
     "dtoSuffix": "DTO",
@@ -33,6 +31,9 @@
     "clientPackageManager": "npm",
     "skipClient": true,
     "herokuAppName": "gamification-server",
-    "herokuDeployType": "jar"
+    "herokuDeployType": "jar",
+    "embeddableLaunchScript": false,
+    "creationTimestamp": 1610013103907,
+    "blueprints": []
   }
 }

@@ -1,8 +1,10 @@
 package com.game.biz.rest;
 
 import com.game.biz.model.BadgeLegend;
+import com.game.biz.model.Present;
 import com.game.biz.model.exception.NumberOfBadgesRequiredException;
 import com.game.biz.service.BadgeLegendService;
+import com.game.biz.service.PresentService;
 import com.game.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -32,9 +34,11 @@ public class BadgeLegendResource {
     private String applicationName;
 
     private final BadgeLegendService badgeLegendService;
+    private final PresentService presentService;
 
-    public BadgeLegendResource(BadgeLegendService badgeLegendService) {
+    public BadgeLegendResource(BadgeLegendService badgeLegendService, PresentService presentService) {
         this.badgeLegendService = badgeLegendService;
+        this.presentService = presentService;
     }
 
     /**
@@ -121,5 +125,7 @@ public class BadgeLegendResource {
     @GetMapping("/badge-legends/exchange/{userId}")
     public void exchangeForPresent(@PathVariable Long userId) throws NumberOfBadgesRequiredException {
         badgeLegendService.exchangeLegendForPresent(userId);
+        Present p = new Present(userId);
+        presentService.save(p);
     }
 }

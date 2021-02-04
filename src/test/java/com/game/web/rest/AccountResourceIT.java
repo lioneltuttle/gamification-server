@@ -1,6 +1,8 @@
 package com.game.web.rest;
 
 import com.game.GamejhipsterApp;
+import com.game.biz.service.NotificationService;
+import com.game.biz.service.PointService;
 import com.game.biz.service.dto.PasswordChangeDTO;
 import com.game.biz.service.dto.UserDTO;
 import com.game.config.Constants;
@@ -59,6 +61,12 @@ public class AccountResourceIT {
     private UserService userService;
 
     @Autowired
+    private PointService pointService;
+
+    @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -70,8 +78,11 @@ public class AccountResourceIT {
     @Mock
     private UserService mockUserService;
 
+
+
     @Mock
     private MailService mockMailService;
+
 
     private MockMvc restMvc;
 
@@ -82,10 +93,10 @@ public class AccountResourceIT {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(any());
         AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
+            new AccountResource(userRepository, userService, mockMailService, notificationService, pointService);
 
         AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
+            new AccountResource(userRepository, mockUserService, mockMailService, notificationService, pointService);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)

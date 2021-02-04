@@ -19,15 +19,22 @@ public class RecapDTO {
 
     private Integer badgeLegend;
 
+    private Integer consumedPresents;
+
+    private Integer pendingPresents;
+
     private boolean shouldReceivePresent;
 
 
-    public RecapDTO(UserDTO user , List<Resultat> resultats, int badgeLegend, int badgeMaster){
+    public RecapDTO(UserDTO user , List<Resultat> resultats, int badgeMaster, int badgeLegend, int consumedPresents, int pendingPresents){
         this.user = user;
         resultats.stream().forEach(resultat ->  badgesPro.put(resultat.getCategorie(), resultat.getNbBadges()) );
         resultats.stream().forEach(resultat ->  points.put(resultat.getCategorie(), resultat.getPoints()) );
         this.badgeMaster = badgeMaster;
         this.badgeLegend = badgeLegend;
+        this.consumedPresents = consumedPresents;
+        this.pendingPresents = pendingPresents;
+
     }
 
     public UserDTO getUser() {
@@ -68,6 +75,22 @@ public class RecapDTO {
 
     public void setBadgeLegend(Integer badgeLegend) {
         this.badgeLegend = badgeLegend;
+    }
+
+    public Integer getConsumedPresents() {
+        return consumedPresents;
+    }
+
+    public void setConsumedPresents(Integer consumedPresents) {
+        this.consumedPresents = consumedPresents;
+    }
+
+    public Integer getPendingPresents() {
+        return pendingPresents;
+    }
+
+    public void setPendingPresents(Integer pendingPresents) {
+        this.pendingPresents = pendingPresents;
     }
 
     public boolean isShouldReceivePresent() {
