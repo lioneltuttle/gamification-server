@@ -66,7 +66,59 @@ public class PointServiceImpl implements PointService {
                 .date(point.getDate());
             pointsAuditService.save(pa);
         }
+/*
+        try {
+            String jsonResponse;
 
+            URL url = new URL("https://onesignal.com/api/v1/notifications");
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            con.setRequestProperty("Authorization", "Basic \u003cNTZkMWY5NGMtOWRiYy00NjRiLTk5ZTYtYmJiNzIzZmU2YThj\u003e");
+            con.setRequestMethod("POST");
+
+
+
+            String strJsonBody = "{"
+                +   "\"app_id\": \"aa9cbc7f-2910-4afe-9cec-ac799f760b8f\","
+                +   "\"include_external_user_ids\": [\""+point.getUserId()+"\"],"
+                +   "\"channel_for_external_user_ids\": \"push\","
+                +   "\"data\": {\"foo\": \"bar\"},"
+                +   "\"contents\": {\"en\": \"Points have been updated\",\"fr\": \"Solde de points mis à jour\"},"
+                +   "\"headings\": {\"en\": \"Congratulations!\",\"fr\": \"Félicitations!\"},"
+                +   "\"large_icon\": \"https://www.123-stickers.com/6579-6950-thickbox/sticker-toad-youpi.jpg\""
+                + "}";
+
+            System.out.println("strJsonBody:\n" + strJsonBody);
+
+            byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+            con.setFixedLengthStreamingMode(sendBytes.length);
+
+            OutputStream outputStream = con.getOutputStream();
+            outputStream.write(sendBytes);
+
+            int httpResponse = con.getResponseCode();
+            System.out.println("httpResponse: " + httpResponse);
+
+            if (  httpResponse >= HttpURLConnection.HTTP_OK
+                && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST) {
+                Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                scanner.close();
+            }
+            else {
+                Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                scanner.close();
+            }
+            System.out.println("jsonResponse:\n" + jsonResponse);
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        }*/
         return point_retour;
     }
 
@@ -121,7 +173,7 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<Point> findByUserIdAndPeriod(Long userId, LocalDate begin, LocalDate end) {
-        return pointRepository.findAllByUserIdAndDateBetween(userId, begin, end);
+        return pointRepository.findAllByUserIdAndDateBetweenOrderByDateDesc(userId, begin, end);
     }
 
     @Override

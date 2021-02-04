@@ -4,7 +4,11 @@ package com.game.biz.model;
 import com.game.biz.model.enumeration.BadgeType;
 
 import javax.persistence.*;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
 /**
  * A Resultat.

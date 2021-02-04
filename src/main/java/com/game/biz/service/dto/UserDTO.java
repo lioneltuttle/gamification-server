@@ -171,6 +171,7 @@ public class UserDTO {
     }
 
     public Set<String> getAuthorities() {
+
         return authorities;
     }
 

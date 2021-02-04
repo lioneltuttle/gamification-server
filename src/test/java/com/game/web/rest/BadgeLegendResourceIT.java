@@ -4,6 +4,7 @@ import com.game.GamejhipsterApp;
 import com.game.biz.model.BadgeLegend;
 import com.game.biz.rest.BadgeLegendResource;
 import com.game.biz.service.BadgeLegendService;
+import com.game.biz.service.PresentService;
 import com.game.repository.biz.BadgeLegendRepository;
 import com.game.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,9 @@ public class BadgeLegendResourceIT {
     private BadgeLegendService badgeLegendService;
 
     @Autowired
+    private PresentService presentService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -73,7 +77,7 @@ public class BadgeLegendResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final BadgeLegendResource badgeLegendResource = new BadgeLegendResource(badgeLegendService);
+        final BadgeLegendResource badgeLegendResource = new BadgeLegendResource(badgeLegendService, presentService);
         this.restBadgeLegendMockMvc = MockMvcBuilders.standaloneSetup(badgeLegendResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
